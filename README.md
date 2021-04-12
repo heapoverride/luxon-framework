@@ -8,7 +8,8 @@ Luxon PHP is a powerful framework and provides a simple template for your next P
 ### Installation
 - Place these files to your webserver's document root (which hopefully is empty)
 
-Note: Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist
+Note: Luxon's loader will try to load PHP files from certain predefined directories\
+and will make them if they don't exist.
 
 ### Features
 - Lightning fast routing
