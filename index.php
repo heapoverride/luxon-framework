@@ -23,16 +23,14 @@
         __load("controllers");
         __load("routes");
 
-        Database::connect();
+        if (DB_CONNECT) { Database::connect(); }
         Router::accept();
     } catch (NoRouteException $_EXCEPTION) {
         global $_EXCEPTION;
-
         Router::setStatus(404); // not found
         include_once "error/route/index.php";
     } catch (Exception $_EXCEPTION) {
         global $_EXCEPTION;
-
         Router::setStatus(503); // internal server error
         include_once "error/other/index.php";
     }

@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Demo site</title>
+<title>Luxon PHP framework</title>
 <link rel="stylesheet" href="/content/styles/styles.css">
 </head>
 <body>
