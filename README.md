@@ -18,5 +18,5 @@ and will make them if they don't exist (for example, `controllers` and `models`)
 - Database query builder, ORM and templated queries
 - Added security
 
-# Extras
+### Extras
 - Enable OPcache in PHP config (php.ini) for extra performance
