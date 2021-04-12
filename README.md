@@ -11,7 +11,7 @@ Luxon PHP is a powerful framework and provides a simple template for your next P
 - Configure MySQL database connection and enable it if you need it in `config/database.php`
 
 Note: Luxon's loader will try to load PHP files from certain predefined directories\
-and will make them if they don't exist (for examsple `controllers` and `models`).
+and will make them if they don't exist (for example, `controllers` and `models`).
 
 ### Features
 - Lightning fast routing
