@@ -10,7 +10,7 @@ Luxon is powerful and minimal framework and provides a solid base for your next 
 - Change the default value of APP_SECRET in `config/application.php`
 - Configure MySQL database connection and enable it if you need it in `config/database.php`
 
-Note: Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`).
+**Note:** Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`). If the loader fails to create a missing directory it will throw an error and you'll see 503 error in your web browser. (check directory permissions!)
 
 ### Features
 - Lightning fast routing
