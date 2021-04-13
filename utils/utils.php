@@ -25,6 +25,9 @@
      * @param string $viewName Name of the view to be loaded from "./views/"
      */
     function view($viewName) {
+        if (preg_match("/^[A-z0-9\/\-\._]*$/", $viewName) !== 1) {
+            throw new Exception('Disallowed characters in view name');
+        }
         include_once "views/partials/header.php";
         include_once "views/$viewName.php";
         include_once "views/partials/footer.php";

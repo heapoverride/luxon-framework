@@ -20,8 +20,8 @@
         __load("config");
         __load("utils");
         __load("database");
-        __load("models");
         __load("modules");
+        __load("models");
         __load("controllers");
         __load("routes");
         
@@ -41,6 +41,7 @@
         }
 
         if (DB_CONNECT) { Database::connect(); }
+        Session::retrieve();
         Router::accept();
     } catch (NoRouteException $_EXCEPTION) {
         global $_EXCEPTION;

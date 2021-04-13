@@ -1,9 +1,9 @@
 <?php
 
-    session_start();
+    if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
 
-    if (!isset($_SESSION['mod_messages'])) {
-        $_SESSION['mod_messages'] = [];
+    if (!isset($_SESSION['LUXON_MESSAGES'])) {
+        $_SESSION['LUXON_MESSAGES'] = [];
     }
 
     class Messages {
@@ -12,7 +12,7 @@
          * @return integer
          */
         public static function count() {
-            return count($_SESSION['mod_messages']);
+            return count($_SESSION['LUXON_MESSAGES']);
         }
 
         /**
@@ -20,7 +20,7 @@
          * @param string $str Message to push
          */
         public static function push($str) {
-            $_SESSION['mod_messages'][] = $str;
+            $_SESSION['LUXON_MESSAGES'][] = $str;
         }
 
         /**
@@ -28,7 +28,7 @@
          * @return string
          */
         public static function pop() {
-            return array_shift($_SESSION['mod_messages']);
+            return array_shift($_SESSION['LUXON_MESSAGES']);
         }
 
         /**
@@ -36,8 +36,8 @@
          * @return array
          */
         public static function flush() {
-            $all = $_SESSION['mod_messages'];
-            $_SESSION['mod_messages'] = [];
+            $all = $_SESSION['LUXON_MESSAGES'];
+            $_SESSION['LUXON_MESSAGES'] = [];
             return $all;
         }
 

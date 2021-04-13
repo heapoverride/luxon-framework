@@ -121,14 +121,19 @@
          */
         public static function accept() {
             $path = strtok($_SERVER["REQUEST_URI"], '?');
+            $routes = self::$routes;
+            array_splice(self::$routes, 0);
 
-            for ($i = count(self::$routes)-1; $i > -1; $i--) {
-                $route = self::$routes[$i];
+            for ($i = count($routes)-1; $i > -1; $i--) {
+                $route = $routes[$i];
                 
                 if ($route->method === '*' || $_SERVER['REQUEST_METHOD'] === $route->method) {
                     $matches = null;
                     if (preg_match($route->path, $path, $matches) === 1) {
                         array_shift($matches);
+                        for ($j=0; $j<count($matches); $i++) {
+                            $matches[$i] = urldecode($matches[$i]);
+                        }
                         
                         if (is_callable($route->action)) {
                             ($route->action)(...$matches);
