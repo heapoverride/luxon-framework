@@ -48,7 +48,7 @@ Router::route("GET", "/^\/products\/([\w\-\_]*)\/([\w\-\_]*)\/?(\d*?)\/?$/", fun
 ```
 
 # 2. Controllers
-In MVC (model-view-controller) model the controller responds to the user input and performs interactions on the data model objects. The controller receives the input, optionally validates it and then passes the input to the model. Below is a simple login & registration example with Luxon.
+In MVC (model-view-controller) model the controller responds to the user input and performs interactions on the data model objects. The controller receives the input, optionally validates it and then passes the input to the model. Below is a simple login & registration example with Luxon. You could also create a separate model for these user specific database operations and then from your controller call the user model's methods.
 
 **/routes/routes.php**
 ```php
