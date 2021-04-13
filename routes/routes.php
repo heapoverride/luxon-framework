@@ -1,7 +1,8 @@
 <?php
 
+    /* Luxon's default page */
     Router::route("GET", "/^\/$/", function() {
-        view('index');
+        include_once "views/standalone/luxon.php";
     });
 
 ?>

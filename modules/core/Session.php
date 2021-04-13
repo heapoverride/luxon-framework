@@ -4,7 +4,7 @@
 
     class Session {
         private static $storage = array();
-
+        
         /**
          * Retrieve stored object by it's name
          * @param string $name Name of the stored object
@@ -42,7 +42,7 @@
         }
 
         /**
-         * Retrieve stored objects for this session (Luxion calls this method automatically so you don't have to)
+         * Retrieve stored objects for this session (Luxon calls this method automatically so you don't have to)
          */
         public static function retrieve() {
             if (isset($_SESSION['LUXION_SESSION'])) {

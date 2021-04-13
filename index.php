@@ -46,11 +46,11 @@
     } catch (NoRouteException $_EXCEPTION) {
         global $_EXCEPTION;
         Router::setStatus(404); // not found
-        include_once "error/route/index.php";
+        include_once "errorpages/404_route.php";
     } catch (Exception $_EXCEPTION) {
         global $_EXCEPTION;
         Router::setStatus(503); // internal server error
-        include_once "error/other/index.php";
+        include_once "errorpages/503_internal.php";
     }
 
 ?>

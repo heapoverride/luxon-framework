@@ -1,1 +1,0 @@
-<h2>404 - Route Not Found</h2>
