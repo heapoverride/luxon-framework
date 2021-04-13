@@ -24,7 +24,7 @@ Luxon is powerful and minimal framework and provides a solid base for your next 
 # 1. Router and routes
 Router is one of Luxon's core modules that is used to route incoming request to handler that then takes care of that request. Routes are checked from bottom to top.
 
-### Adding new routes (./routes/)
+### Adding new routes
 For example, to route GET requests to our front page we could use something like this
 ```php
 Router::route("GET", "/^\/$/", function() {
