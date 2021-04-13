@@ -1,5 +1,5 @@
-# Luxon PHP
-Luxon PHP is a powerful framework and provides a simple template for your next PHP powered website.
+# What is Luxon?
+Luxon PHP is powerful and very simple framework and provides a base for your next PHP powered website.
 
 ### Prerequisites
 - PHP 7.4 or newer

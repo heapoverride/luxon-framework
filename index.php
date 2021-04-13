@@ -16,8 +16,7 @@
                 mkdir($path, 0777, true);
             }
         }
-    
-        /* Load all */
+
         __load("config");
         __load("utils");
         __load("database");

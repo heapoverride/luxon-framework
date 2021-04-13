@@ -4,7 +4,7 @@
         private static $connection = null;
 
         /**
-         * Try to connect to a database
+         * Try to connect to database server
          */
         public static function connect() {
             self::$connection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
@@ -18,12 +18,12 @@
          * Return the underlying mysqli instance
          * @return mysqli
          */
-        public static function instance() {
+        public static function mysqli() {
             return self::$connection;
         }
 
         /**
-         * Constructs a safe query string using templates
+         * Constructs a safe query string using template
          * @return string
          */
         public static function template($template, ...$data) {
@@ -93,7 +93,7 @@
         }
         
         /**
-         * Query a database
+         * Execute database query
          * @return QueryResult
          */
         public static function query($query) {
