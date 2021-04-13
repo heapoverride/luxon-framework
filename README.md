@@ -1,5 +1,5 @@
 # What is Luxon?
-Luxon is powerful and minimal framework and provides base for your next website.
+Luxon is powerful and minimal framework and provides a solid base for your next website.
 
 ### Prerequisites
 - PHP 7.4 or newer
