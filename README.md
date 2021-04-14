@@ -6,8 +6,15 @@ Luxon is powerful and minimal framework and provides a solid base for your next 
 - php-mysqli
 
 ### Installation
-- Place these files to your webserver's document root (which hopefully is empty)
-- Change the default value of APP_SECRET in `config/application.php`
+- Place these files to your webserver's document root (which hopefully is empty)\
+```bash
+# install luxon from terminal (make sure that '/var/www/html' is your web server's document root and that it is empty)
+cd /var/www/html
+git clone https://github.com/UnrealSecurity/luxon-framework.git .
+chmod -R 777 .
+```
+- Change the default value of **APP_SECRET** in `config/application.php`
+- If your website does not support secure connection through HTTPS make sure to set **APP_REQUIRE_HTTPS** to **false** in `config/application.php`
 - Configure MySQL database connection and enable it if you need it in `config/database.php`
 
 **Note:** Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`). If the loader fails to create a missing directory it will throw an error and you'll see 503 error in your web browser. (check directory permissions!)
