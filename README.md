@@ -1,5 +1,5 @@
 # What is Luxon?
-Luxon is powerful and minimal framework and provides a solid base for your next website. All Luxon's core modules are JSdoc'ed so that your code editor can provide you helpful information about each method (I use Visual Studio Code and it supports JSdoc).
+Luxon is powerful and minimal framework and provides a solid base for your next website. All Luxon's core modules are JSdoc'ed so that your code editor can provide you with helpful information about each method (I use Visual Studio Code and it supports JSdoc).
 
 ### Prerequisites
 - PHP 7.4 or newer
