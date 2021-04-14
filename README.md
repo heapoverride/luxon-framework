@@ -1,11 +1,11 @@
 # What is Luxon?
 Luxon is powerful and minimal framework and provides a solid base for your next website. All Luxon's core modules are JSdoc'ed so that your code editor can provide you with helpful information about each method (I use Visual Studio Code and it supports JSdoc).
 
-### Prerequisites
+### :dart: Prerequisites
 - PHP 7.4 or newer
 - php-mysqli
 
-### Installation
+### :rocket: Installation
 - Download this repo as zip file and copy the files in folder `luxon-framework-main` to your web server's document root (which hopefully is empty)
 ```bash
 # or install luxon from terminal (make sure that '/var/www/html' is your web server's document root and that it is empty)
@@ -19,12 +19,12 @@ chmod -R 777 .
 
 **Note:** Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`). If the loader fails to create a missing directory it will throw an error and you'll see 503 error in your web browser. (check directory permissions!)
 
-### Features
+### :truck: Features
 - Lightning fast routing
 - Database query builder, ORM and templated queries
 - Added security
 
-### Extras
+### :fire: Extras
 - Enable OPcache in PHP config (php.ini) for extra performance
 
 
