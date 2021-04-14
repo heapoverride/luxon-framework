@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>404 - Route Not Found</title>
+        <title>404 - Page Or Resource Not Found</title>
         <style>
             body {
                 font-family: Arial, Helvetica, sans-serif;
@@ -46,7 +46,7 @@
     <body>
 
         <div class="container">
-            <h1>404 - Route Not Found</h1>
+            <h1>404 - Page Or Resource Not Found</h1>
 
             <div class="links">
                 <a href="/">Bring me back home</a>

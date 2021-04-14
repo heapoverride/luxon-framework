@@ -49,12 +49,13 @@
 
         /**
          * Tries to serve static content from filesystem\
-         * WARNING: Please note that some webservers handle byte range requests automatically and therefore prevents this from working with audio/video files!
-         * @param null|string $filepath Path to file or directory to serve (null = look at request URI to determine content to be served)
-         * @param null|string $contentType MIME content type of this resource
+         * WARNING: Please note that some web servers handle byte range requests automatically and therefore prevents this from working with audio/video files!
+         * @param null|string $filepath Path to file or directory to serve (null = look at the request URI to determine what content should be served)
+         * @param null|string $contentType MIME content type of this resource (null = automatically get the file's content type)
+         * @param bool $errorpages If set to true will serve errorpages automatically when file isn't found or there is other issue (when enabled this method will always return true)
          * @return bool Returns true if file was succesfully served
          */
-        public static function serve($filepath = null, $contentType = null) {
+        public static function serve($filepath = null, $contentType = null, $errorpages = true) {
             if ($filepath === null) return self::serve(self::removeDotDots('.'.$_SERVER['REQUEST_URI']));
 
             if (is_file($filepath)) {
@@ -85,14 +86,23 @@
 
                             return true;
                         } else {
-                            self::setStatus(500);
+                            self::setStatus(500); // internal server error
+                            if ($errorpages) return true;
                         }
                     }
                     return false;
                 }
 
                 header('Accept-Ranges: bytes');
-                readfile($filepath);
+
+                if (!readfile($filepath)) {
+                    if ($errorpages) {
+                        self::setStatus(500); // internal server error
+                        include_once "errorpages/500_internal.php";
+                        return true;
+                    }
+                    return false;
+                }
             } else if (is_dir($filepath)) {
                 foreach (scandir($filepath) as $entry) {
                     $fullpath = $filepath.DIRECTORY_SEPARATOR.$entry;
@@ -103,6 +113,12 @@
                         return true;
                     }
                 }
+            }
+
+            if ($errorpages) {
+                self::setStatus(404); // page or resource not found
+                include_once "errorpages/404_page.php";
+                return true;
             }
 
             return false;
