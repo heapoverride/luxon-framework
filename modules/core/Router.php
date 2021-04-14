@@ -84,7 +84,7 @@
                             return;
                         }
 
-                        if (($handle = fopen($filepath, 'r')) !== false) {
+                        if (($handle = fopen($filepath, 'rb')) !== false) {
                             self::setStatus(206); // partial content
                             header("Content-Length: $length");
                             header("Content-Range: bytes $rangeStart-$rangeEnd/$filesize");
