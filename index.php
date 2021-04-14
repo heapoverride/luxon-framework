@@ -35,7 +35,7 @@
         if (APP_REQUIRE_HTTPS && empty($_SERVER["HTTPS"])) {
             $host = $_SERVER['HTTP_HOST'];
             
-            if (preg_match("/^[a-z0-9\.\-\:]$/", $host) === 1) {
+            if (preg_match("/^[a-z0-9\.\-\:]*$/", $host) === 1) {
                 $uri = $_SERVER['REQUEST_URI'];
                 if (strlen($uri) > 0 && strpos($uri, '/') === 0) {
                     $query = $_SERVER['QUERY_STRING'];
