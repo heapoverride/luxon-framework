@@ -23,7 +23,10 @@
         }
 
         /**
-         * Constructs a safe query string using template
+         * Constructs a safe query string using a query template\
+         * Example: Database::template('INSERT INTO users $ VALUES ?', ['firstName', 'lastName'], ['John', 'Connor'])
+         * @param string $template Query template
+         * @param {...mixed} Rest of the arguments are used to fill the template
          * @return string
          */
         public static function template($template, ...$data) {
@@ -93,7 +96,8 @@
         }
         
         /**
-         * Execute database query
+         * Executes a database query (unsafe)
+         * @param string $query SQL query string
          * @return QueryResult
          */
         public static function query($query) {
