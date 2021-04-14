@@ -53,11 +53,15 @@
          * @param null|string $filepath Path to file or directory to serve (null = look at the request URI to determine what content should be served)
          * @param null|string $contentType MIME content type of this resource (null = automatically get the file's content type)
          * @param bool $errorpages If set to true will serve errorpages automatically when file isn't found or there is other issue (when enabled this method will always return true)
+         * @param null|string $directory Current directory prefix (defaults to empty string)
          * @return bool Returns true if file was succesfully served
          */
-        public static function serve($filepath = null, $contentType = null, $errorpages = true) {
-            if ($filepath === null) return self::serve(self::removeDotDots('.'.$_SERVER['REQUEST_URI']));
-
+        public static function serve($filepath = null, $contentType = null, $errorpages = true, $directory = null) {
+            if ($directory === null) $directory = "";
+            if ($filepath === null) return self::serve($directory.self::removeDotDots('.'.$_SERVER['REQUEST_URI']));
+            
+            $filepath = $directory.$filepath;
+            
             if (is_file($filepath)) {
                 if (!self::isAllowedExtension($filepath)) {
                     if ($errorpages) {
