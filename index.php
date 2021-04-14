@@ -19,13 +19,18 @@
             }
         }
 
-        __load("config");
-        __load("utils");
-        __load("database");
-        __load("modules");
-        __load("models");
-        __load("controllers");
-        __load("routes");
+        $paths = [
+            "config",
+            "utils",
+            "database",
+            "modules",
+            "models",
+            "controllers",
+            "routes"
+        ];
+        foreach ($paths as $path) {
+            __load($path);
+        }
         
         if (APP_REQUIRE_HTTPS && empty($_SERVER["HTTPS"])) {
             $host = $_SERVER['HTTP_HOST'];
