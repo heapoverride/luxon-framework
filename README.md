@@ -17,7 +17,7 @@ chmod -R 777 .
 - If your website does not support secure connection through HTTPS make sure to set **APP_REQUIRE_HTTPS** to **false** in `config/application.php`
 - Configure MySQL database connection and enable it if you need it in `config/database.php`
 
-**Note:** Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`). If the loader fails to create a missing directory it will throw an error and you'll see 503 error in your web browser. (check directory permissions!)
+**Note:** Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`). If the loader fails to create a missing directory it will throw an error and you'll see `500 - Internal Server Error` in your web browser. (check directory permissions!)
 
 ### :truck: Features
 - Lightning fast routing
