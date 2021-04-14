@@ -21,7 +21,7 @@
             }
 
             h1 {
-                color: #4a339c;
+                color: #a12727;
                 margin-bottom: 20px;
             }
 

@@ -59,7 +59,15 @@
             if ($filepath === null) return self::serve(self::removeDotDots('.'.$_SERVER['REQUEST_URI']));
 
             if (is_file($filepath)) {
-                if (!self::isAllowedExtension($filepath)) return false;
+                if (!self::isAllowedExtension($filepath)) {
+                    if ($errorpages) {
+                        self::setStatus(404); // page or resource not found
+                        include_once "errorpages/404_page.php";
+                        return true;
+                    }
+                    return false;
+                }
+                
                 if ($contentType === null) { header('Content-Type: '.mime_content_type($filepath)); }
 
                 if (isset($_SERVER['HTTP_RANGE'])) {
