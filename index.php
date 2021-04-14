@@ -38,8 +38,7 @@
             if (preg_match("/^[a-z0-9\.\-\:]*$/", $host) === 1) {
                 $uri = $_SERVER['REQUEST_URI'];
                 if (strlen($uri) > 0 && strpos($uri, '/') === 0) {
-                    $query = $_SERVER['QUERY_STRING'];
-                    header("Location: https://".$host.$uri.$query);
+                    header("Location: https://".$host.$uri);
                     exit;
                 }
             }
