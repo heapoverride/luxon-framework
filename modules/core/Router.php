@@ -29,7 +29,13 @@
             return $filepath;
         }
 
-        private static function ends_with($haystack, $needle) {
+        private static function starts($haystack, $needle) {
+            $length = strlen($needle);
+            if (!$length) return true;
+            return substr($haystack, 0, $length) === $needle;
+        }
+
+        private static function ends($haystack, $needle) {
             $length = strlen($needle);
             if (!$length) return true;
             return substr($haystack, -$length) === $needle;
@@ -39,12 +45,37 @@
             $filepath = strtolower($filepath);
 
             foreach (self::$disallowed as $ext) {
-                if (self::ends_with($filepath, $ext)) {
+                if (self::ends($filepath, $ext)) {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private static function toLocalPath($uri) {
+            $uri = self::removeDotDots(strtok($uri, '?'));
+            if (strlen($uri) > 0 && $uri[0] === "/") {
+                $uri = substr($uri, 1);
+            }
+            return $uri;
+        }
+
+        private static function pathCombine(...$paths) {
+            for ($i=0; $i<count($paths); $i++) {
+                if ($paths[$i] === "/") {
+                    $paths[$i] = "";
+                } else {
+                    if (self::starts($paths[$i], DIRECTORY_SEPARATOR) && $i !== 0) {
+                        $paths[$i] = substr($paths[$i], 1);
+                    }
+                    if (self::ends($paths[$i], DIRECTORY_SEPARATOR)) {
+                        $paths[$i] = substr($paths[$i], 0, strlen($paths[$i])-1);
+                    }
+                }
+            }
+
+            return implode(DIRECTORY_SEPARATOR, $paths);
         }
 
         /**
@@ -53,15 +84,14 @@
          * @param null|string $filepath Path to file or directory to serve (null = look at the request URI to determine what content should be served)
          * @param null|string $contentType MIME content type of this resource (null = automatically get the file's content type)
          * @param bool $errorpages If set to true will serve errorpages automatically when file isn't found or there is other issue (when enabled this method will always return true)
-         * @param null|string $directory Current directory prefix (defaults to empty string)
+         * @param null|string $directory Current directory prefix (defaults to "." if null)
          * @return bool Returns true if file was succesfully served
          */
         public static function serve($filepath = null, $contentType = null, $errorpages = true, $directory = null) {
-            if ($directory === null) $directory = "";
-            if ($filepath === null) return self::serve($directory.self::removeDotDots('.'.$_SERVER['REQUEST_URI']));
-            
-            $filepath = $directory.$filepath;
-            
+            if ($directory === null) $directory = ".";
+            if ($filepath === null) $filepath = self::toLocalPath($_SERVER["REQUEST_URI"]);
+            $filepath = self::pathCombine($directory, $filepath);
+
             if (is_file($filepath)) {
                 if (!self::isAllowedExtension($filepath)) {
                     if ($errorpages) {
@@ -116,8 +146,10 @@
                     return false;
                 }
             } else if (is_dir($filepath)) {
+                $s = (self::ends($filepath, DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR);
+
                 foreach (scandir($filepath) as $entry) {
-                    $fullpath = $filepath.DIRECTORY_SEPARATOR.$entry;
+                    $fullpath = $filepath.$s.$entry;
                     if (in_array($entry, array(".", "..")) || is_link($fullpath)) continue;
 
                     if (preg_match(self::$index, $entry) === 1) {
