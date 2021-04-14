@@ -56,8 +56,8 @@
         include_once "errorpages/404_route.php";
     } catch (Exception $_EXCEPTION) {
         global $_EXCEPTION;
-        Router::setStatus(503); // internal server error
-        include_once "errorpages/503_internal.php";
+        Router::setStatus(500); // internal server error
+        include_once "errorpages/500_internal.php";
     }
 
 ?>
