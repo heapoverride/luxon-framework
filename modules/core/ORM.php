@@ -18,24 +18,24 @@
         }
 
         /**
-         * Select columns from table
+         * Select data from a database
          * @param string $table Table name
-         * @param null|string[] $fields Fields to select (null = * = select all columns)
+         * @param null|string[] $columns Columns to select (null or "*" to select all columns)
          * @return ORM
          */
-        public function select($table, $fields = null) {
+        public function select($table, $columns = null) {
             if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
 
-            if ($fields === null || $fields === '*') {
-                $fields = ['*'];
+            if ($columns === null || $columns === '*') {
+                $columns = ['*'];
             } else {
-                for ($i=0; $i<count($fields); $i++) {
-                    if (!$this->_is_valid_field_name($fields[$i])) throw new Exception('Column name is invalid');
-                    $fields[$i] = Database::escape($fields[$i], false);
+                for ($i=0; $i<count($columns); $i++) {
+                    if (!$this->_is_valid_field_name($columns[$i])) throw new Exception('Column name is invalid');
+                    $columns[$i] = Database::escape($columns[$i], false);
                 }
             }
 
-            $this->array[] = "SELECT ".implode(', ', $fields)." FROM ".Database::escape($table, false);
+            $this->array[] = "SELECT ".implode(', ', $columns)." FROM ".Database::escape($table, false);
             return $this;
         }
 
