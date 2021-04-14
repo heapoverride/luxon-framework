@@ -6,7 +6,7 @@ Luxon is powerful and minimal framework and provides a solid base for your next 
 - php-mysqli
 
 ### Installation
-- Download this repo as zip file and copy the files in folder `luxon-framework-main` to your webserver's document root (which hopefully is empty)
+- Download this repo as zip file and copy the files in folder `luxon-framework-main` to your web server's document root (which hopefully is empty)
 ```bash
 # or install luxon from terminal (make sure that '/var/www/html' is your web server's document root and that it is empty)
 cd /var/www/html
