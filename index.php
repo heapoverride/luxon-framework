@@ -1,7 +1,7 @@
 <?php
 
     error_reporting(0);
-
+    
     try {
         function __load($path) {
             if (is_dir($path)) {
@@ -28,6 +28,7 @@
             "controllers",
             "routes"
         ];
+
         foreach ($paths as $path) {
             __load($path);
         }
