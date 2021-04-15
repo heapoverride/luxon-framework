@@ -18,6 +18,15 @@ chmod -R 777 .
 - Configure MySQL database connection and enable it if you need it in `config/database.php`
 
 **Note:** Luxon's loader will try to load PHP files from certain predefined directories and will make them if they don't exist (for example, `controllers` and `models`). If the loader fails to create a missing directory it will throw an error and you'll see `500 - Internal Server Error` in your web browser. (check directory permissions!)
+<br/><br/>
+If your .htaccess file isn't working you should make sure that your configuration is correct. For apache web server you should check `/etc/apache2/apache2.conf` and ensure that the Directory directive for your document root (typically /var/www/html) has `AllowOverride All` and `Options -Indexes` like in the example below.
+```apache
+<Directory /var/www/html>
+        Options -Indexes
+        AllowOverride All
+        Require all granted
+</Directory>
+```
 
 ### :truck: Features
 - Lightning fast routing
