@@ -191,8 +191,8 @@
                     $matches = null;
                     if (preg_match($route->path, $path, $matches) === 1) {
                         array_shift($matches);
-                        for ($j=0; $j<count($matches); $i++) {
-                            $matches[$i] = urldecode($matches[$i]);
+                        for ($j = 0; $j < count($matches); $j++) {
+                            $matches[$j] = urldecode($matches[$j]);
                         }
                         
                         if (is_callable($route->action)) {
