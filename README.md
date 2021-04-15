@@ -36,7 +36,6 @@ If your .htaccess file isn't working you should make sure that your configuratio
 ### :fire: Extras
 - Enable OPcache in PHP config (php.ini) for extra performance
 
-
 # 1. Router and routes
 Router is one of Luxon's core modules that is used to route incoming request to handler that then takes care of that request. Routes are checked from bottom to top.
 

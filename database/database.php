@@ -8,8 +8,8 @@
          */
         public static function connect() {
             self::$connection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
-            if (!self::$connection) {
-                throw new Exception('Database connection failed!');
+            if (self::$connection->connect_errno) {
+                throw new Exception('Database connection failed: '.self::$connection->connect_error);
             }
             self::$connection->set_charset("utf8mb4");
         }
@@ -137,7 +137,7 @@
 
         public static function get_array_d($array) {
             if (is_array($array)) {
-                if (count($array) > 0 && is_array($array[0])) {
+                if (count($array) > 0 && isset($array[0]) && is_array($array[0])) {
                     return 2;
                 }
                 return 1;
