@@ -1,7 +1,5 @@
 <?php
 
-    if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
-
     class Session {
         private static $storage = array();
         
@@ -59,5 +57,8 @@
             $_SESSION['LUXION_SESSION'] = serialize(self::$storage);
         }
     }
+
+    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    Session::retrieve();
 
 ?>

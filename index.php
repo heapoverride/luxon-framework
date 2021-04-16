@@ -46,9 +46,7 @@
             
             throw new Exception();
         }
-
-        if (DB_CONNECT) { Database::connect(); }
-        Session::retrieve();
+        
         Router::accept();
     } catch (NoRouteException $_EXCEPTION) {
         global $_EXCEPTION;

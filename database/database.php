@@ -178,4 +178,6 @@
         }
     }
 
+    if (DB_CONNECT) Database::connect();
+
 ?>
