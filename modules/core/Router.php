@@ -15,67 +15,16 @@
             self::$routes[] = new Route($method, $path, $action);
         }
 
-        /**
-         * Remove dot-dots (..) from filepath
-         * @param string $filepath Path to file or directory to be sanitized
-         */
-        private static function removeDotDots($filepath) {
-            while (true) {
-                $lengthBefore = strlen($filepath);
-                $filepath = str_replace('..', '.', $filepath);
-                if ($lengthBefore === strlen($filepath)) break;
-            }
-            
-            return $filepath;
-        }
-
-        private static function starts($haystack, $needle) {
-            $length = strlen($needle);
-            if (!$length) return true;
-            return substr($haystack, 0, $length) === $needle;
-        }
-
-        private static function ends($haystack, $needle) {
-            $length = strlen($needle);
-            if (!$length) return true;
-            return substr($haystack, -$length) === $needle;
-        }
-
         private static function isAllowedExtension($filepath) {
             $filepath = strtolower($filepath);
 
             foreach (self::$disallowed as $ext) {
-                if (self::ends($filepath, $ext)) {
+                if (Utils::str_ends_with($filepath, $ext)) {
                     return false;
                 }
             }
 
             return true;
-        }
-
-        private static function toLocalPath($uri) {
-            $uri = self::removeDotDots(strtok($uri, '?'));
-            if (strlen($uri) > 0 && $uri[0] === "/") {
-                $uri = substr($uri, 1);
-            }
-            return $uri;
-        }
-
-        private static function pathCombine(...$paths) {
-            for ($i=0; $i<count($paths); $i++) {
-                if ($paths[$i] === "/") {
-                    $paths[$i] = "";
-                } else {
-                    if (self::starts($paths[$i], DIRECTORY_SEPARATOR) && $i !== 0) {
-                        $paths[$i] = substr($paths[$i], 1);
-                    }
-                    if (self::ends($paths[$i], DIRECTORY_SEPARATOR)) {
-                        $paths[$i] = substr($paths[$i], 0, strlen($paths[$i])-1);
-                    }
-                }
-            }
-
-            return implode(DIRECTORY_SEPARATOR, $paths);
         }
 
         /**
@@ -89,8 +38,8 @@
          */
         public static function serve($filepath = null, $contentType = null, $errorpages = true, $directory = null) {
             if ($directory === null) $directory = ".";
-            if ($filepath === null) $filepath = self::toLocalPath($_SERVER["REQUEST_URI"]);
-            $filepath = self::pathCombine($directory, $filepath);
+            if ($filepath === null) $filepath = Utils::toLocalPath($_SERVER["REQUEST_URI"]);
+            $filepath = Utils::pathCombine($directory, $filepath);
 
             if (is_file($filepath)) {
                 if (!self::isAllowedExtension($filepath)) {
@@ -146,7 +95,7 @@
                     return false;
                 }
             } else if (is_dir($filepath)) {
-                $s = (self::ends($filepath, DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR);
+                $s = (Utils::str_ends_with($filepath, DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR);
 
                 foreach (scandir($filepath) as $entry) {
                     $fullpath = $filepath.$s.$entry;
