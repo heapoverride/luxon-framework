@@ -57,7 +57,6 @@
                     $d = self::get_array_d($value);
 
                     if ($d === 0) {
-                        $value = strval($value);
                         $array[$i] = self::escape($value);
                     } else if ($d === 1) {
                         $array[$i] = self::escape_array($value);
@@ -139,7 +138,7 @@
 
         public static function get_array_d($array) {
             if (is_array($array)) {
-                if (count($array) > 0 && isset($array[0]) && is_array($array[0])) {
+                if (count($array) > 0 && is_array($array[0])) {
                     return 2;
                 }
                 return 1;
@@ -179,7 +178,7 @@
             return mysqli_num_rows($this->result) || 0;
         }
     }
-
-    if (DB_CONNECT) Database::connect();
+    
+    if (DB_CONNECT) Database::connect(); 
 
 ?>
