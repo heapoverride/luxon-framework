@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>503 - Internal Server Error</title>
+        <title>500 - Internal Server Error</title>
         <style>
             body {
                 font-family: Arial, Helvetica, sans-serif;
@@ -46,7 +46,7 @@
     <body>
 
         <div class="container">
-            <h1>503 - Internal Server Error</h1>
+            <h1>500 - Internal Server Error</h1>
             
             <p>I can't even (╯°—°)╯︵ ┻━┻</p>
 
