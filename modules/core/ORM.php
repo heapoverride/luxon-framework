@@ -39,9 +39,9 @@
             return $this;
         }
 
-        private function __all_strings($array) {
-            foreach ($array as $el) {
-                if (!is_string($el)) return false;
+        private function _has_no_arrays($condition) {
+            foreach ($condition as $el) {
+                if (is_array($el)) return false;
             }
             return true;
         }
@@ -52,7 +52,7 @@
             $array[] = "WHERE";
             if ($inverted) { $array[] = 'NOT'; }
 
-            if ((count($condition) === 2 || count($condition) === 3) && $this->__all_strings($condition)) {
+            if ((count($condition) === 2 || count($condition) === 3) && $this->_has_no_arrays($condition)) {
                 $condition = [$condition];
             }
 
