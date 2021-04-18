@@ -72,7 +72,7 @@
                     } else if (count($element) === 3) {
                         $L = $element[0];
                         $R = $element[2];
-                        $op = strval($element[1]);
+                        $op = strtoupper(strval($element[1]));
 
                         if (!$this->_is_valid_field_name($L)) throw new Exception('Column name is invalid');
                         if (!in_array($op, $this->ops)) throw new Exception('Invalid compare operator');
