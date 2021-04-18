@@ -2,7 +2,7 @@
 
     class ORM {
         private $array = [];
-        private $ops = ['=', '>', '<', '>=', '<=', '<>', '!='];
+        private $ops = ['=', '>', '<', '>=', '<=', '<>', '!=', 'LIKE'];
 
         /**
          * Get new instance of ORM
