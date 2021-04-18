@@ -28,6 +28,25 @@ If your .htaccess file isn't working you should make sure that your configuratio
 </Directory>
 ```
 
+#### Example configuration for NGINX
+```nginx
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        root /var/www/html;
+        server_name _;
+
+        try_files /index.php?$query_string /index.php?$query_string;
+
+        location /index.php {
+                include snippets/fastcgi-php.conf;
+                include fastcgi_params;
+                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        }
+}
+```
+
 ### :truck: Features
 - Lightning fast routing
 - Database query builder, ORM and templated queries
