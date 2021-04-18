@@ -11,8 +11,17 @@
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLINFO_HEADER_OUT, 1);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10000);
-            if ($json) curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type' => 'application/json']);
-            if ($headers !== null) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            if ($json) curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+
+            if ($headers !== null) {
+                $_headers = [];
+                foreach ($headers as $name => $value) {
+                    $matches = null;
+                    $_headers[] = "$name: $value";
+                }
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $_headers);
+            }
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
             curl_setopt($ch, CURLOPT_URL, $url);
 
