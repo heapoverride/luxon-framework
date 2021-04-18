@@ -30,6 +30,7 @@
          * The HTTP GET method requests a representation of the specified resource. Requests using GET should only be used to request data (they shouldn't include data).
          * @param string $url Request URI
          * @param string[] $headers Request headers in an associative array
+         * @return Response
          */
         public static function get($url, $headers = null) {
             return self::send('GET', $url, $headers);
@@ -40,7 +41,8 @@
          * @param string $url Request URI
          * @param string|mixed $body Request body
          * @param string[] $headers Request headers in an associative array
-         * @param boolean If set to true will encode request body to JSON and set the appropriate content type header (application/json)
+         * @param boolean $json If set to true will encode request body to JSON and set the appropriate content type header (application/json)
+         * @return Response
          */
         public static function post($url, $body, $headers = null, $json = false) {
             if ($json) $body = json_encode($body);
@@ -52,6 +54,7 @@
          * The HTTP HEAD method requests the headers that would be returned if the HEAD request's URL was instead requested with the HTTP GET method.
          * @param string $url Request URI
          * @param string[] $headers Request headers in an associative array
+         * @return Response
          */
         public static function head($url, $headers = null) {
             return self::send('HEAD', $url, $headers);
@@ -62,7 +65,8 @@
          * @param string $url Request URI
          * @param string|mixed $body Request body
          * @param string[] $headers Request headers in an associative array
-         * @param boolean If set to true will encode request body to JSON and set the appropriate content type header (application/json)
+         * @param boolean $json If set to true will encode request body to JSON and set the appropriate content type header (application/json)
+         * @return Response
          */
         public static function put($url, $body, $headers = null, $json = false) {
             if ($json) $body = json_encode($body);
@@ -74,6 +78,7 @@
          * The HTTP DELETE request method deletes the specified resource.
          * @param string $url Request URI
          * @param string[] $headers Request headers in an associative array
+         * @return Response
          */
         public static function delete($url, $headers = null) {
             return self::send('DELETE', $url, $headers);
@@ -83,6 +88,7 @@
          * The HTTP OPTIONS method requests permitted communication options for a given URL or server. A client can specify a URL with this method, or an asterisk (*) to refer to the entire server.
          * @param string $url Request URI
          * @param string[] $headers Request headers in an associative array
+         * @return Response
          */
         public static function options($url, $headers = null) {
             return self::send('OPTIONS', $url, $headers);
@@ -92,6 +98,7 @@
          * The HTTP CONNECT method starts two-way communications with the requested resource. It can be used to open a tunnel.
          * @param string $url Request URI
          * @param string[] $headers Request headers in an associative array
+         * @return Response
          */
         public static function connect($uri, $headers = null) {
             return self::send('CONNECT', $uri, $headers);
@@ -101,6 +108,7 @@
          * The HTTP TRACE method performs a message loop-back test along the path to the target resource, providing a useful debugging mechanism.
          * @param string $url Request URI
          * @param string[] $headers Request headers in an associative array
+         * @return Response
          */
         public static function trace($uri, $headers = null) {
             return self::send('TRACE', $uri, $headers);
@@ -111,7 +119,8 @@
          * @param string $url Request URI
          * @param string|mixed $body Request body
          * @param string[] $headers Request headers in an associative array
-         * @param boolean If set to true will encode request body to JSON and set the appropriate content type header (application/json)
+         * @param boolean $json If set to true will encode request body to JSON and set the appropriate content type header (application/json)
+         * @return Response
          */
         public static function patch($uri, $url, $body, $headers = null, $json = false) {
             if ($json) $body = json_encode($body);
