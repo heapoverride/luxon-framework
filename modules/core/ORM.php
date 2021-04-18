@@ -39,11 +39,22 @@
             return $this;
         }
 
+        private function __all_strings($array) {
+            foreach ($array as $el) {
+                if (!is_string($el)) return false;
+            }
+            return true;
+        }
+
         private function _where($inverted, ...$condition) {
             $array = [];
 
             $array[] = "WHERE";
             if ($inverted) { $array[] = 'NOT'; }
+
+            if ((count($condition) === 2 || count($condition) === 3) && $this->__all_strings($condition)) {
+                $condition = [$condition];
+            }
 
             foreach ($condition as $element) {
                 if (is_string($element)) {
