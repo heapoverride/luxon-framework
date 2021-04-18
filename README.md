@@ -44,6 +44,10 @@ server {
                 include fastcgi_params;
                 fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
         }
+
+        location ~ /\.ht {
+                deny all;
+        }
 }
 ```
 
