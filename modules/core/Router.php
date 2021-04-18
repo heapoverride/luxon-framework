@@ -4,6 +4,7 @@
         private static $routes = [];
         private static $index = "/^index\.(php|html)$/i";
         private static $disallowed = ['.php', '.sql'];
+        private static $continue = false;
         
         /**
          * Add new route
@@ -13,6 +14,14 @@
          */
         public static function route($method, $path, $action) {
             self::$routes[] = new Route($method, $path, $action);
+        }
+
+        /**
+         * Call this method from your route's callback function to tell router\
+         * to keep looking for another route
+         */
+        public static function continue() {
+            self::$continue = true;
         }
 
         private static function isAllowedExtension($filepath) {
@@ -135,6 +144,7 @@
 
             for ($i = count($routes)-1; $i > -1; $i--) {
                 $route = $routes[$i];
+                self::$continue = false;
                 
                 if ($route->method === '*' || $_SERVER['REQUEST_METHOD'] === $route->method) {
                     $matches = null;
@@ -150,7 +160,7 @@
                             call_user_func([$route->action[0], $route->action[1]], ...$matches);
                         }
 
-                        return;
+                        if (!self::$continue) return;
                     }
                 }
             }
