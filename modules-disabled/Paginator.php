@@ -8,7 +8,7 @@
         private $totalItems;
         private $pageNum;
         private $pageSize;
-        private $neighbors;
+        private $maxNeighbors;
 
         /**
          * @param integer $totalItems Total number of items to paginate
@@ -56,7 +56,7 @@
             $pageNum = $this->pageNum - 1;
             $array = [];
 
-            for ($i = $pageNum - $this->neighbors; $i < $pageNum; $i++) {
+            for ($i = $pageNum - $this->maxNeighbors; $i < $pageNum; $i++) {
                 if ($i < 0) continue;
                 $page = new PaginatorPage();
                 $page->Number = $i + 1;
@@ -70,7 +70,7 @@
             $array[] = $page;
 
             $next = $pageNum + 1;
-            for ($i = $next; $i > 0 && $i < $next + $this->neighbors && $i < $numPages; $i++) {
+            for ($i = $next; $i > 0 && $i < $next + $this->maxNeighbors && $i < $numPages; $i++) {
                 $page = new PaginatorPage();
                 $page->Number = $i + 1;
                 $page->IsActive = false;
