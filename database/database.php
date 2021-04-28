@@ -110,7 +110,7 @@
          */
         public static function getLastInsertId() {
             $result = self::query("SELECT LAST_INSERT_ID() AS Id");
-            return $result->fetch()["Id"];
+            return intval($result->fetch()["Id"]);
         }
 
         public static function escape($value, $quotes = true) {
