@@ -104,6 +104,15 @@
             return new QueryResult($result);
         }
 
+        /**
+         * Gets last insert ID (MariaDB)
+         * @return integer|null
+         */
+        public static function getLastInsertId() {
+            $result = self::query("SELECT LAST_INSERT_ID() AS Id");
+            return $result->fetch()["Id"];
+        }
+
         public static function escape($value, $quotes = true) {
             if ($value === null) {
                 return 'NULL';
@@ -113,6 +122,7 @@
                 return strval($value);
             }
             
+            $value = str_replace("\\", "\\\\", $value);
             $value = str_replace('\'', '\\\'', strval($value));
             return $quotes ? "'".$value."'" : $value;
         }
