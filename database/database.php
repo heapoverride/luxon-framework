@@ -100,14 +100,7 @@
          * @return QueryResult
          */
         public static function query($query) {
-            $lines = [];
-            foreach (explode("\n", $query) as $line) {
-                $line = trim($line);
-                if (strlen($line) > 0) {
-                    $lines[] = trim($line);
-                }
-            }
-            $result = self::$connection->query(implode(" ", $lines));
+            $result = self::$connection->query($query);
             return new QueryResult($result);
         }
 
