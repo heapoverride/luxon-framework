@@ -67,6 +67,8 @@
         function add($element) {
             if (is_string($element)) {
                 $this->children[] = new Text($element);
+            } else if (is_numeric($element)) {
+                $this->children[] = new Text(strval($element));
             } else if ($element instanceof Element) {
                 $this->children[] = $element;
             }
@@ -555,15 +557,6 @@
     }
 
     /**
-     * Select element
-     */
-    class Option extends Element {
-        function __construct() {
-            parent::__construct("option");
-        }
-    }
-
-    /**
      * Textarea element
      */
     class Textarea extends Element {
@@ -592,6 +585,15 @@
     class Select extends Element {
         function __construct() {
             parent::__construct("select");
+        }
+    }
+    
+    /**
+     * Option element
+     */
+    class Option extends Element {
+        function __construct() {
+            parent::__construct("option");
         }
     }
 
