@@ -41,7 +41,7 @@
          * Set text displayed by this element
          */
         function setText($text) {
-            $this->text = $text;
+            $this->text = strval($text);
             return $this;
         }
 
@@ -65,12 +65,10 @@
          * @param Element|string $element
          */
         function add($element) {
-            if (is_string($element)) {
-                $this->children[] = new Text($element);
-            } else if (is_numeric($element)) {
-                $this->children[] = new Text(strval($element));
-            } else if ($element instanceof Element) {
+            if ($element instanceof Element) {
                 $this->children[] = $element;
+            } else {
+                $this->children[] = new Text(strval($element));
             }
             return $this;
         }
@@ -79,6 +77,9 @@
          * Set attribute
          */
         function set($name, $value = null) {
+            if ($value !== null && !is_string($value)) {
+                $value = strval($value);
+            }
             $this->attributes[$name] = $value;
             return $this;
         }
