@@ -49,6 +49,13 @@
         }
 
         /**
+         * Get the number of children this element holds
+         */
+        function countChildren() {
+            return count($this->children);
+        }
+
+        /**
          * Set element's ID
          * @param string|int $id
          * @return Element
