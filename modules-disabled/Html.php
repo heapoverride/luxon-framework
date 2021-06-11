@@ -59,6 +59,16 @@
         }
 
         /**
+         * Set element's name (forms)
+         * @param string|int $name
+         * @return Element
+         */
+        function setName($name) {
+            $this->set("name", $name);
+            return $this;
+        }
+
+        /**
          * Set element's class list
          * @param array $classList
          * @return Element
