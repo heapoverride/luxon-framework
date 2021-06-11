@@ -34,6 +34,7 @@
         private function sa_str(&$str) {
             $str = str_replace(" ", "-", $str);
             $str = str_replace("\"", "-", $str);
+            return $str;
         }
 
         private function sa_arr(&$arr) {
