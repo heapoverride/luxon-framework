@@ -23,6 +23,8 @@
 
         /**
          * Set element that appears before this element
+         * @param Element|string $element
+         * @return Element
          */
         function setBefore($element) {
             $this->before = $element;
@@ -31,6 +33,8 @@
 
         /**
          * Set element that appears after this element
+         * @param Element|string $element
+         * @return Element
          */
         function setAfter($element) {
             $this->after = $element;
@@ -38,7 +42,9 @@
         }
 
         /**
-         * Set text displayed by this element
+         * Set displayed text
+         * @param string $text
+         * @return Element
          */
         function setText($text) {
             $this->text = strval($text);
@@ -46,7 +52,9 @@
         }
 
         /**
-         * Set all children for this element
+         * Set all child elements
+         * @param mixed[] $children
+         * @return Element
          */
         function setChildren($children) {
             if (!is_array($children)) {
@@ -58,11 +66,13 @@
                 }
             }
             $this->children = $children;
+            return $this;
         }
 
         /**
-         * Add child element to this element
+         * Add child element
          * @param Element|string $element
+         * @return Element
          */
         function add($element) {
             if ($element instanceof Element) {
@@ -74,7 +84,10 @@
         }
 
         /**
-         * Set attribute
+         * Add or set attribute value
+         * @param string $name
+         * @param string $value
+         * @return Element
          */
         function set($name, $value = null) {
             if ($value !== null && !is_string($value)) {
@@ -85,15 +98,20 @@
         }
 
         /**
-         * Set style
+         * Add or set style property
+         * @param string $name
+         * @param string $value
+         * @return Element
          */
         function setStyle($name, $value) {
-            $this->styles[$name] = $value;
+            $this->styles[$name] = strval($value);
             return $this;
         }
 
         /**
          * Set if element has a body
+         * @param bool $hasBody
+         * @return Element
          */
         function setHasBody($hasBody) {
             $this->nobody = !$hasBody;
@@ -102,16 +120,18 @@
 
         /**
          * Print the HTML source code
+         * @param bool $return Set to True to return the generated code instead of writing it to response body
+         * @return string
          */
         function html($return = false) {
             $html = [];
 
             // before
             if ($this->before !== null) {
-                if (is_string($this->before)) {
-                    $html[] = $this->before;
-                } else if ($this->before instanceof Element) {
+                if ($this->before instanceof Element) {
                     $html[] = $this->before->html();
+                } else {
+                    $html[] = strval($this->before);
                 }
             }
 
@@ -165,10 +185,10 @@
 
             // after
             if ($this->after !== null) {
-                if (is_string($this->after)) {
-                    $html[] = $this->after;
-                } else if ($this->after instanceof Element) {
+                if ($this->after instanceof Element) {
                     $html[] = $this->after->html();
+                } else {
+                    $html[] = strval($this->after);
                 }
             }
 
