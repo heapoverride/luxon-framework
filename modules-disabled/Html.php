@@ -16,9 +16,19 @@
         private $nobody = false;
         private $before = null;
         private $after = null;
+        private $depth = 0;
 
         function __construct($name) {
             $this->name = strtolower($name);
+        }
+
+        private function indent($depth) {
+            if ($depth === 0) return "";
+            $str = "";
+            for ($i = 0; $i<$depth; $i++) {
+                $str .= "   ";
+            }
+            return $str;
         }
 
         /**
@@ -52,6 +62,14 @@
         }
 
         /**
+         * Get if this element is a text element
+         * @return bool
+         */
+        function isText() {
+            return $this instanceof Text || $this->text !== null;
+        }
+
+        /**
          * Set all child elements
          * @param mixed[] $children
          * @return Element
@@ -76,9 +94,12 @@
          */
         function add($element) {
             if ($element instanceof Element) {
+                $element->depth = $this->depth + 1;
                 $this->children[] = $element;
             } else {
-                $this->children[] = new Text(strval($element));
+                $text = new Text(strval($element));
+                $text->depth = $this->depth + 1;
+                $this->children[] = $text;
             }
             return $this;
         }
@@ -119,17 +140,37 @@
         }
 
         /**
+         * Get if this element is empty
+         * @return bool
+         */
+        function isEmpty() {
+            return count($this->children) === 0 && ($this->text === null || strlen($this->text) === 0);
+        }
+
+        /**
+         * Get if this element has children
+         * @return bool
+         */
+        function hasChildren() {
+            return !$this->isText() && count($this->children) > 0;
+        }
+
+        /**
          * Print the HTML source code
-         * @param bool $return Set to True to return the generated code instead of writing it to response body
+         * @param bool $return Set to `true` to return the generated code instead of writing it to response body
+         * @param bool $format Set to `true` to format the generated HTML source code
          * @return string
          */
-        function html($return = false) {
+        function html($return = false, $format = false) {
             $html = [];
+
+            $indent = $format ? $this->indent($this->depth) : "";
+            $expand = $format ? (count($this->children) >= 2 || count($this->children) == 1 && !$this->children[0]->isText()) : false;
 
             // before
             if ($this->before !== null) {
                 if ($this->before instanceof Element) {
-                    $html[] = $this->before->html();
+                    $html[] = $this->before->html(true, $format);
                 } else {
                     $html[] = strval($this->before);
                 }
@@ -137,7 +178,7 @@
 
             if ($this->text === null) {
                 // opening tag
-                $html[] = "<".$this->name;
+                $html[] = $indent."<".$this->name;
 
                 // attributes
                 if (count($this->attributes) !== 0) {
@@ -160,6 +201,7 @@
                 }
 
                 if (!$this->nobody) $html[] = ">";
+                if ($format && $expand) $html[] = "\n";
             } else {
                 // text
                 $html[] = htmlspecialchars($this->text);
@@ -170,23 +212,26 @@
                 if (is_string($child)) {
                     $html[] = htmlspecialchars($child);
                 } else if ($child instanceof Element) {
-                    $html[] = $child->html(true);
+                    $child->depth = $this->depth + 1;
+                    $html[] = $child->html(true, $format);
                 }
             }
 
             if ($this->text === null) {
                 if (!$this->nobody) {
                     // closing tag
+                    if ($expand) $html[] = $indent;
                     $html[] = "</".$this->name.">";
                 } else {
-                    $html[] = "/>";
+                    $html[] = " />";
                 }
+                if ($format) $html[] = "\n";
             }
 
             // after
             if ($this->after !== null) {
                 if ($this->after instanceof Element) {
-                    $html[] = $this->after->html();
+                    $html[] = $this->after->html(true, $format);
                 } else {
                     $html[] = strval($this->after);
                 }
@@ -221,7 +266,7 @@
     class Html extends Element {
         function __construct() {
             parent::__construct("html");
-            parent::setBefore("<!DOCTYPE html>");
+            parent::setBefore("<!DOCTYPE html>\n");
         }
     }
 
@@ -859,6 +904,15 @@
     class Em extends Element {
         function __construct() {
             parent::__construct("em");
+        }
+    }
+
+    /**
+     * Label element
+     */
+    class Label extends Element {
+        function __construct() {
+            parent::__construct("label");
         }
     }
 
