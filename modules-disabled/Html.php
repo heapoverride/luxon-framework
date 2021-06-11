@@ -31,6 +31,33 @@
             return $str;
         }
 
+        private function sa_str(&$str) {
+            $str = str_replace(" ", "-", $str);
+            $str = str_replace("\"", "-", $str);
+        }
+
+        private function sa_arr(&$arr) {
+            for ($i=0; $i<count($arr); $i++) {
+                $arr[$i] = $this->sa_str($arr[$i]);
+            }
+        }
+
+        /**
+         * Set element's ID
+         */
+        function setId($id) {
+            $this->set("id", $id);
+        }
+
+        /**
+         * Set element's class list
+         * @param array $classList
+         */
+        function setClassList($classList) {
+            $this->sa_arr($classList);
+            $this->set("class", implode(" ", $classList));
+        }
+
         /**
          * Set element that appears before this element
          * @param Element|string $element
@@ -111,6 +138,7 @@
          * @return Element
          */
         function set($name, $value = null) {
+            $name = strtolower($name);
             if ($value !== null && !is_string($value)) {
                 $value = strval($value);
             }
@@ -490,6 +518,11 @@
             }
         }
     }
+    class Hyperlink extends A {
+        function __construct($target = null) {
+            parent::__construct($target);
+        }
+    }
 
     /**
      * Link element
@@ -693,6 +726,11 @@
             parent::__construct("thead");
         }
     }
+    class TableHeader extends Thead {
+        function __construct() {
+            parent::__construct();
+        }
+    }
 
     /**
      * Tbody element
@@ -700,6 +738,11 @@
     class Tbody extends Element {
         function __construct() {
             parent::__construct("tbody");
+        }
+    }
+    class TableBody extends Tbody {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -711,6 +754,11 @@
             parent::__construct("tfoot");
         }
     }
+    class TableFooter extends Tfoot {
+        function __construct() {
+            parent::__construct();
+        }
+    }
 
     /**
      * Th element (parent: thead)
@@ -718,6 +766,11 @@
     class Th extends Element {
         function __construct() {
             parent::__construct("th");
+        }
+    }
+    class TableHeaderCell extends Th {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -729,6 +782,11 @@
             parent::__construct("tr");
         }
     }
+    class TableRow extends Tr {
+        function __construct() {
+            parent::__construct();
+        }
+    }
 
     /**
      * Td element (parent: table|tbody|tfoot)
@@ -736,6 +794,11 @@
     class Td extends Element {
         function __construct() {
             parent::__construct("td");
+        }
+    }
+    class TableCell extends Td {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -747,6 +810,11 @@
             parent::__construct("img");
             parent::set("src", $source);
             parent::setHasBody(false);
+        }
+    }
+    class Image extends Img {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -793,27 +861,42 @@
     /**
      * Ul element (unordered list)
      */
-    class UnorderedList extends Element {
+    class Ul extends Element {
         function __construct() {
             parent::__construct("ul");
+        }
+    }
+    class UnorderedList extends Ul {
+        function __construct() {
+            parent::__construct();
         }
     }
 
     /**
      * Ol element (ordered list)
      */
-    class OrderedList extends Element {
+    class Ol extends Element {
         function __construct() {
             parent::__construct("ol");
+        }
+    }
+    class OrderedList extends Ol {
+        function __construct() {
+            parent::__construct();
         }
     }
 
     /**
      * Li element (ordered list)
      */
-    class ListItem extends Element {
+    class Li extends Element {
         function __construct() {
             parent::__construct("li");
+        }
+    }
+    class ListItem extends Li {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -847,9 +930,14 @@
     /**
      * Paragraph element
      */
-    class Paragraph extends Element {
+    class P extends Element {
         function __construct() {
             parent::__construct("p");
+        }
+    }
+    class Paragraph extends P {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -874,27 +962,42 @@
     /**
      * Italic element
      */
-    class Italic extends Element {
+    class I extends Element {
         function __construct() {
             parent::__construct("i");
+        }
+    }
+    class Italic extends I {
+        function __construct() {
+            parent::__construct();
         }
     }
 
     /**
      * Underline element
      */
-    class Underline extends Element {
+    class U extends Element {
         function __construct() {
             parent::__construct("u");
+        }
+    }
+    class Underline extends U {
+        function __construct() {
+            parent::__construct();
         }
     }
 
     /**
      * Bold element
      */
-    class Bold extends Element {
+    class B extends Element {
         function __construct() {
             parent::__construct("b");
+        }
+    }
+    class Bold extends B {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -904,6 +1007,11 @@
     class Em extends Element {
         function __construct() {
             parent::__construct("em");
+        }
+    }
+    class Emphasis extends Em {
+        function __construct() {
+            parent::__construct();
         }
     }
 
@@ -924,6 +1032,11 @@
             parent::__construct("sub");
         }
     }
+    class Subscript extends Sub {
+        function __construct() {
+            parent::__construct();
+        }
+    }
 
     /**
      * Sup element (superscripted text)
@@ -931,6 +1044,11 @@
     class Sup extends Element {
         function __construct() {
             parent::__construct("sup");
+        }
+    }
+    class Superscript extends Sup {
+        function __construct() {
+            parent::__construct();
         }
     }
 
