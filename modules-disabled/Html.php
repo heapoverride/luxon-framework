@@ -290,7 +290,7 @@
     }
 
     /**
-     * Html element
+     * Represents the root (top-level element) of an HTML document
      */
     class Html extends Element {
         function __construct() {
@@ -300,7 +300,7 @@
     }
 
     /**
-     * Head element
+     * Defines the head section of an HTML document
      */
     class Head extends Element {
         function __construct() {
@@ -309,7 +309,7 @@
     }
 
     /**
-     * Title element
+     * Defines the title or name of an HTML document
      */
     class Title extends Element {
         function __construct($title = null) {
@@ -319,7 +319,7 @@
     }
 
     /**
-     * Meta element
+     * Defines metadata of an HTML document
      */
     class Meta extends Element {
         function __construct() {
@@ -328,7 +328,7 @@
     }
 
     /**
-     * Style element
+     * Defines the style information for an HTML document
      */
     class Style extends Element {
         function __construct($target = null) {
@@ -345,7 +345,7 @@
     }
 
     /**
-     * Body element
+     * Defines the body section of an HTML document
      */
     class Body extends Element {
         function __construct() {
@@ -354,7 +354,7 @@
     }
 
     /**
-     * Div element
+     * Defines a division or section within HTML document
      */
     class Div extends Element {
         function __construct() {
@@ -363,7 +363,7 @@
     }
 
     /**
-     * Span element
+     * Used for styling and grouping inline
      */
     class Span extends Element {
         function __construct() {
@@ -372,7 +372,7 @@
     }
 
     /**
-     * Article element
+     * Defines self-contained content
      */
     class Article extends Element {
         function __construct() {
@@ -381,7 +381,8 @@
     }
 
     /**
-     * Aside element
+     * Defines content aside from main content\
+     * Mainly represented as sidebar
      */
     class Aside extends Element {
         function __construct() {
@@ -390,7 +391,7 @@
     }
 
     /**
-     * details element
+     * Defines additional details which user can either view or hide
      */
     class Details extends Element {
         function __construct() {
@@ -399,7 +400,7 @@
     }
 
     /**
-     * Figcaption element
+     * Used to add a caption or explanation for the Figure element
      */
     class Figcaption extends Element {
         function __construct() {
@@ -408,7 +409,7 @@
     }
 
     /**
-     * Caption element
+     * Used to define a caption for a table
      */
     class Caption extends Element {
         function __construct() {
@@ -417,7 +418,7 @@
     }
 
     /**
-     * Cite element
+     * Used to define the title of the work, book, website, ...
      */
     class Cite extends Element {
         function __construct() {
@@ -426,7 +427,7 @@
     }
 
     /**
-     * Figure element
+     * Used to define the self-contained content
      */
     class Figure extends Element {
         function __construct() {
@@ -435,7 +436,7 @@
     }
 
     /**
-     * Footer element
+     * Defines the footer section of a webpage
      */
     class Footer extends Element {
         function __construct() {
@@ -444,7 +445,7 @@
     }
 
     /**
-     * Header element
+     * Defines the header of a section or webpage
      */
     class Header extends Element {
         function __construct() {
@@ -453,7 +454,7 @@
     }
 
     /**
-     * Main element
+     * Represents the main content of an HTML document
      */
     class Main extends Element {
         function __construct() {
@@ -462,7 +463,7 @@
     }
 
     /**
-     * Mark element
+     * Represents a highlighted text
      */
     class Mark extends Element {
         function __construct() {
@@ -471,7 +472,7 @@
     }
 
     /**
-     * Nav element
+     * Represents section of page to represent navigation links
      */
     class Nav extends Element {
         function __construct() {
@@ -480,7 +481,7 @@
     }
 
     /**
-     * Section element
+     * Defines a generic section for a document
      */
     class Section extends Element {
         function __construct() {
@@ -489,7 +490,7 @@
     }
 
     /**
-     * Summary element
+     * Defines summary which can be used with `Details`
      */
     class Summary extends Element {
         function __construct() {
@@ -498,7 +499,7 @@
     }
 
     /**
-     * Time element
+     * Define data/time within an HTML document
      */
     class Time extends Element {
         function __construct() {
@@ -507,7 +508,7 @@
     }
 
     /**
-     * A element
+     * Creates a hyperlink or link
      */
     class A extends Element {
         function __construct($target = null) {
@@ -519,6 +520,7 @@
             }
         }
     }
+
     class Hyperlink extends A {
         function __construct($target = null) {
             parent::__construct($target);
@@ -526,7 +528,7 @@
     }
 
     /**
-     * Link element
+     * Represents a relationship between current document and an external resource
      */
     class Link extends Element {
         function __construct($target) {
@@ -535,7 +537,7 @@
     }
 
     /**
-     * Area element
+     * Defines the area of an image map
      */
     class Area extends Element {
         function __construct() {
@@ -544,7 +546,7 @@
     }
 
     /**
-     * Blockquote element
+     * Used to define a content which is taken from another source
      */
     class Blockquote extends Element {
         function __construct() {
@@ -553,7 +555,7 @@
     }
 
     /**
-     * Button element
+     * Used to represent a clickable button
      */
     class Button extends Element {
         function __construct() {
@@ -562,7 +564,7 @@
     }
 
     /**
-     * Canvas element
+     * Used to provide a graphics space within a web document
      */
     class Canvas extends Element {
         function __construct() {
@@ -571,7 +573,7 @@
     }
 
     /**
-     * Code element
+     * Used to display a part of programming code in an HTML document
      */
     class Code extends Element {
         function __construct() {
@@ -580,7 +582,7 @@
     }
 
     /**
-     * Col element
+     * Ddefines a column within a `Table` which represent common properties of columns and used with the `Colgroup`
      */
     class Col extends Element {
         function __construct() {
@@ -589,7 +591,7 @@
     }
 
     /**
-     * Colgroup element
+     * Used to define group of columns in a table
      */
     class Colgroup extends Element {
         function __construct() {
@@ -598,7 +600,7 @@
     }
 
     /**
-     * Data element
+     * Used to link the content with the machine-readable translation
      */
     class Data extends Element {
         function __construct() {
@@ -607,7 +609,7 @@
     }
 
     /**
-     * Datalist element
+     * Used to provide a predefined list for input option
      */
     class Datalist extends Element {
         function __construct() {
@@ -616,7 +618,7 @@
     }
 
     /**
-     * Dialog element
+     * Defines a dialog box or other interactive components
      */
     class Dialog extends Element {
         function __construct() {
@@ -625,7 +627,7 @@
     }
 
     /**
-     * Embed element
+     * Used as embedded container for external file/application/media
      */
     class Embed extends Element {
         function __construct() {
@@ -634,7 +636,7 @@
     }
 
     /**
-     * Fieldset element
+     * Used to group related elements/labels within a web form
      */
     class Fieldset extends Element {
         function __construct() {
@@ -643,7 +645,16 @@
     }
 
     /**
-     * Form element
+     * Defines a caption for content of `Fieldset`
+     */
+    class Legend extends Element {
+        function __construct() {
+            parent::__construct("legend");
+        }
+    }
+
+    /**
+     * Used to define an HTML form
      */
     class Form extends Element {
         function __construct() {
@@ -652,7 +663,7 @@
     }
 
     /**
-     * Input element
+     * Defines an input field within an HTML form
      */
     class Input extends Element {
         function __construct() {
@@ -662,7 +673,7 @@
     }
 
     /**
-     * Textarea element
+     * Used to define multiple line input, such as comment, feedback, and review
      */
     class Textarea extends Element {
         function __construct() {
@@ -671,7 +682,7 @@
     }
 
     /**
-     * Script element
+     * Used to declare the JavaScript within HTML document
      */
     class Script extends Element {
         function __construct($source = null) {
@@ -684,7 +695,7 @@
     }
 
     /**
-     * Select element
+     * Represents a control which provides a menu of options
      */
     class Select extends Element {
         function __construct() {
@@ -693,7 +704,7 @@
     }
     
     /**
-     * Option element
+     * Used to define options or items in a drop-down list (`Select`)
      */
     class Option extends Element {
         function __construct() {
@@ -702,7 +713,7 @@
     }
 
     /**
-     * Iframe element
+     * Defines an inline frame which can embed other content
      */
     class Iframe extends Element {
         function __construct() {
@@ -711,7 +722,7 @@
     }
 
     /**
-     * Table element
+     * Used to present data in tabular form or to create a table within HTML document
      */
     class Table extends Element {
         function __construct() {
@@ -720,13 +731,15 @@
     }
 
     /**
-     * Thead element
+     * Defines the header of an HTML table\
+     * It is used along with `TableBody` and `TableFooter`
      */
     class Thead extends Element {
         function __construct() {
             parent::__construct("thead");
         }
     }
+
     class TableHeader extends Thead {
         function __construct() {
             parent::__construct();
@@ -734,13 +747,14 @@
     }
 
     /**
-     * Tbody element
+     * Represents the body content of an HTML table and used along with `TableHeader` and `TableFooter`
      */
     class Tbody extends Element {
         function __construct() {
             parent::__construct("tbody");
         }
     }
+
     class TableBody extends Tbody {
         function __construct() {
             parent::__construct();
@@ -748,13 +762,14 @@
     }
 
     /**
-     * Tfoot element
+     * Defines the footer content of an HTML table
      */
     class Tfoot extends Element {
         function __construct() {
             parent::__construct("tfoot");
         }
     }
+
     class TableFooter extends Tfoot {
         function __construct() {
             parent::__construct();
@@ -762,13 +777,15 @@
     }
 
     /**
-     * Th element (parent: thead)
+     * Defines the head cell of an HTML table\
+     * Used with `TableHeader`
      */
     class Th extends Element {
         function __construct() {
             parent::__construct("th");
         }
     }
+    
     class TableHeaderCell extends Th {
         function __construct() {
             parent::__construct();
@@ -776,13 +793,14 @@
     }
 
     /**
-     * Tr element (parent: table|thead|tbody|tfoot)
+     * Defines the row cells in an HTML table
      */
     class Tr extends Element {
         function __construct() {
             parent::__construct("tr");
         }
     }
+
     class TableRow extends Tr {
         function __construct() {
             parent::__construct();
@@ -790,13 +808,14 @@
     }
 
     /**
-     * Td element (parent: table|tbody|tfoot)
+     * Used to define cells of an HTML table which contains table data
      */
     class Td extends Element {
         function __construct() {
             parent::__construct("td");
         }
     }
+
     class TableCell extends Td {
         function __construct() {
             parent::__construct();
@@ -804,7 +823,7 @@
     }
 
     /**
-     * Img element
+     * Used to insert an image within an HTML document
      */
     class Img extends Element {
         function __construct($source = "") {
@@ -813,6 +832,7 @@
             parent::setHasBody(false);
         }
     }
+
     class Image extends Img {
         function __construct() {
             parent::__construct();
@@ -820,7 +840,7 @@
     }
 
     /**
-     * Source element (parent: audio|video)
+     * It defines multiple media recourses for different media element such as `Picture`, `Video`, and `Audio`
      */
     class Source extends Element {
         function __construct($source = "", $type = "") {
@@ -832,7 +852,16 @@
     }
 
     /**
-     * Audio element
+     * Defines more than one source elements and one image element
+     */
+    class Picture extends Element {
+        function __construct() {
+            parent::__construct("picture");
+        }
+    }
+
+    /**
+     * Used to embed sound content in HTML document
      */
     class Audio extends Element {
         function __construct() {
@@ -841,7 +870,7 @@
     }
 
     /**
-     * Video element
+     * Used to embed a video content with an HTML document
      */
     class Video extends Element {
         function __construct() {
@@ -850,23 +879,39 @@
     }
 
     /**
-     * H1..H6 elements (headings)
+     * Heading 1
      */
     class H1 extends Element { function __construct() { parent::__construct("h1"); } }
+    /**
+     * Heading 2
+     */
     class H2 extends Element { function __construct() { parent::__construct("h2"); } }
+    /**
+     * Heading 3
+     */
     class H3 extends Element { function __construct() { parent::__construct("h3"); } }
+    /**
+     * Heading 4
+     */
     class H4 extends Element { function __construct() { parent::__construct("h4"); } }
+    /**
+     * Heading 5
+     */
     class H5 extends Element { function __construct() { parent::__construct("h5"); } }
+    /**
+     * Heading 6
+     */
     class H6 extends Element { function __construct() { parent::__construct("h6"); } }
 
     /**
-     * Ul element (unordered list)
+     * Defines unordered list of items
      */
     class Ul extends Element {
         function __construct() {
             parent::__construct("ul");
         }
     }
+
     class UnorderedList extends Ul {
         function __construct() {
             parent::__construct();
@@ -874,13 +919,14 @@
     }
 
     /**
-     * Ol element (ordered list)
+     * Defines ordered list of items
      */
     class Ol extends Element {
         function __construct() {
             parent::__construct("ol");
         }
     }
+
     class OrderedList extends Ol {
         function __construct() {
             parent::__construct();
@@ -888,13 +934,14 @@
     }
 
     /**
-     * Li element (ordered list)
+     * Used to represent items in list
      */
     class Li extends Element {
         function __construct() {
             parent::__construct("li");
         }
     }
+
     class ListItem extends Li {
         function __construct() {
             parent::__construct();
@@ -902,7 +949,7 @@
     }
 
     /**
-     * Track element (parent: audio|video)
+     * Used to define text tracks for `Audio` and `Video`
      */
     class Track extends Element {
         function __construct() {
@@ -911,7 +958,7 @@
     }
 
     /**
-     * Small element
+     * Used to make text font one size smaller than document's base font size
      */
     class Small extends Element {
         function __construct() {
@@ -920,7 +967,7 @@
     }
 
     /**
-     * Pre element
+     * Defines preformatted text in an HTML document
      */
     class Pre extends Element {
         function __construct() {
@@ -929,13 +976,14 @@
     }
 
     /**
-     * Paragraph element
+     * Represents a paragraph in an HTML document
      */
     class P extends Element {
         function __construct() {
             parent::__construct("p");
         }
     }
+
     class Paragraph extends P {
         function __construct() {
             parent::__construct();
@@ -943,7 +991,7 @@
     }
 
     /**
-     * Noscript element
+     * Provides an alternative content if a script type is not supported in browser
      */
     class Noscript extends Element {
         function __construct() {
@@ -952,7 +1000,7 @@
     }
 
     /**
-     * Strong element
+     * Used to define important text
      */
     class Strong extends Element {
         function __construct() {
@@ -961,13 +1009,14 @@
     }
 
     /**
-     * Italic element
+     * Used to represent a text in some different voice
      */
     class I extends Element {
         function __construct() {
             parent::__construct("i");
         }
     }
+
     class Italic extends I {
         function __construct() {
             parent::__construct();
@@ -975,13 +1024,14 @@
     }
 
     /**
-     * Underline element
+     * Used to render enclosed text with an underline
      */
     class U extends Element {
         function __construct() {
             parent::__construct("u");
         }
     }
+
     class Underline extends U {
         function __construct() {
             parent::__construct();
@@ -989,13 +1039,14 @@
     }
 
     /**
-     * Bold element
+     * Used to make a text bold
      */
     class B extends Element {
         function __construct() {
             parent::__construct("b");
         }
     }
+
     class Bold extends B {
         function __construct() {
             parent::__construct();
@@ -1003,13 +1054,14 @@
     }
 
     /**
-     * Em element
+     * Used to emphasis the content applied within this element
      */
     class Em extends Element {
         function __construct() {
             parent::__construct("em");
         }
     }
+
     class Emphasis extends Em {
         function __construct() {
             parent::__construct();
@@ -1017,7 +1069,7 @@
     }
 
     /**
-     * Label element
+     * Defines a text label for `Input` of `Form`
      */
     class Label extends Element {
         function __construct() {
@@ -1026,13 +1078,14 @@
     }
 
     /**
-     * Sub element (subscripted text)
+     * Defines a text which displays as a subscript text
      */
     class Sub extends Element {
         function __construct() {
             parent::__construct("sub");
         }
     }
+
     class Subscript extends Sub {
         function __construct() {
             parent::__construct();
@@ -1040,13 +1093,14 @@
     }
 
     /**
-     * Sup element (superscripted text)
+     * Defines a text which displays as a superscript text
      */
     class Sup extends Element {
         function __construct() {
             parent::__construct("sup");
         }
     }
+
     class Superscript extends Sup {
         function __construct() {
             parent::__construct();
