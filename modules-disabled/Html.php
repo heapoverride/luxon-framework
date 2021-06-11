@@ -436,9 +436,13 @@
      * A element
      */
     class A extends Element {
-        function __construct($target) {
+        function __construct($target = null) {
             parent::__construct("a");
-            parent::set("href", $target);
+            if ($target !== null) {
+                parent::set("href", $target);
+            } else {
+                parent::set("href", "#");
+            }
         }
     }
 
@@ -574,6 +578,7 @@
     class Input extends Element {
         function __construct() {
             parent::__construct("input");
+            parent::setHasBody(false);
         }
     }
 
