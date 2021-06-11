@@ -595,7 +595,6 @@
 
             if ($source !== null) {
                 parent::set("src", $source);
-                parent::setHasBody(false);
             }
         }
     }
