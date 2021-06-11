@@ -7,6 +7,9 @@
 
     namespace Html;
 
+    /**
+     * Defines a HTML element
+     */
     class Element {
         private $name;
         private $children = [];
@@ -24,10 +27,12 @@
 
         private function indent($depth) {
             if ($depth === 0) return "";
+
             $str = "";
             for ($i = 0; $i<$depth; $i++) {
                 $str .= "   ";
             }
+
             return $str;
         }
 
@@ -45,6 +50,7 @@
 
         /**
          * Set element's ID
+         * @param string|int $id
          */
         function setId($id) {
             $this->set("id", $id);
@@ -103,14 +109,14 @@
          * @return Element
          */
         function setChildren($children) {
-            if (!is_array($children)) {
-                throw new \Exception();
-            }
+            if (!is_array($children)) throw new \Exception();
+
             for ($i=0; $i<count($children); $i++) {
                 if (!($children[$i] instanceof Element)) {
                     $children[$i] = htmlspecialchars(strval($children[$i]));
                 }
             }
+
             $this->children = $children;
             return $this;
         }
@@ -129,6 +135,7 @@
                 $text->depth = $this->depth + 1;
                 $this->children[] = $text;
             }
+
             return $this;
         }
 
@@ -140,10 +147,13 @@
          */
         function set($name, $value = null) {
             $name = strtolower($name);
+
             if ($value !== null && !is_string($value)) {
                 $value = strval($value);
             }
+
             $this->attributes[$name] = $value;
+
             return $this;
         }
 
