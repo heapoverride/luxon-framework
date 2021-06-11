@@ -844,8 +844,8 @@
     }
 
     class Image extends Img {
-        function __construct() {
-            parent::__construct();
+        function __construct($source = "") {
+            parent::__construct($source);
         }
     }
 
