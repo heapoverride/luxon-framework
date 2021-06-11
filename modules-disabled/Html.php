@@ -117,7 +117,7 @@
 
             for ($i=0; $i<count($children); $i++) {
                 if (!($children[$i] instanceof Element)) {
-                    $children[$i] = htmlspecialchars(strval($children[$i]));
+                    $children[$i] = new Text(strval($children[$i]));
                 }
             }
 
