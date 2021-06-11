@@ -179,7 +179,7 @@
                     // closing tag
                     $html[] = "</".$this->name.">";
                 } else {
-                    $html[] = " />";
+                    $html[] = "/>";
                 }
             }
 
