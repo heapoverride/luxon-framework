@@ -51,18 +51,22 @@
         /**
          * Set element's ID
          * @param string|int $id
+         * @return Element
          */
         function setId($id) {
             $this->set("id", $id);
+            return $this;
         }
 
         /**
          * Set element's class list
          * @param array $classList
+         * @return Element
          */
         function setClassList($classList) {
             $this->sa_arr($classList);
             $this->set("class", implode(" ", $classList));
+            return $this;
         }
 
         /**
