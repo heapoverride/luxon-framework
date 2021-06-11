@@ -69,6 +69,16 @@
         }
 
         /**
+         * Set element's value
+         * @param string|int $value
+         * @return Element
+         */
+        function setValue($value) {
+            $this->set("value", $value);
+            return $this;
+        }
+
+        /**
          * Set element's class list
          * @param array $classList
          * @return Element
