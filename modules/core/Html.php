@@ -650,6 +650,22 @@
     }
 
     /**
+     * Produces a line break in text (carriage-return)
+     */
+    class Br extends Element {
+        function __construct() {
+            parent::__construct("br");
+            parent::setHasBody(false);
+        }
+    }
+
+    class LineBreak extends Br {
+        function __construct() {
+            parent::__construct();
+        }
+    }
+
+    /**
      * Used to represent a clickable button
      */
     class Button extends Element {
