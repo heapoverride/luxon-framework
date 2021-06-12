@@ -153,18 +153,24 @@
         }
 
         /**
-         * Add child element
-         * @param Element|string $element
+         * Add child elements
+         * @param Element|string $element,...
          * @return Element
          */
-        function add($element) {
-            if ($element instanceof Element) {
-                $element->depth = $this->depth + 1;
-                $this->children[] = $element;
-            } else {
-                $text = new Text(strval($element));
-                $text->depth = $this->depth + 1;
-                $this->children[] = $text;
+        function add(...$elements) {
+            $depth = $this->depth + 1;
+
+            foreach ($elements as $element) {
+                if ($element instanceof Element) {
+                    $element->depth = $depth;
+
+                    $this->children[] = $element;
+                } else {
+                    $text = new Text(strval($element));
+                    $text->depth = $depth;
+
+                    $this->children[] = $text;
+                }
             }
 
             return $this;
