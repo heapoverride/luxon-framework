@@ -375,6 +375,16 @@
     }
 
     /**
+     * TextRef element
+     */
+    class TextRef extends Element {
+        function __construct(&$text) {
+            parent::__construct("");
+            $this->setTextRef($text);
+        }
+    }
+
+    /**
      * Represents the root (top-level element) of an HTML document
      */
     class Html extends Element {
