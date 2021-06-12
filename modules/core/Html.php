@@ -122,7 +122,18 @@
          * @return Element
          */
         function setText($text) {
-            $this->text = strval($text);
+            $this->text = !is_string($text) ? strval($text) : $text;
+            return $this;
+        }
+
+        /**
+         * Set displayed text by passing a reference to a string variable
+         * @param string &$text
+         * @return Element
+         */
+        function setTextRef(&$text) {
+            if (!is_string($text)) throw new \Exception();
+            $this->text = &$text;
             return $this;
         }
 
