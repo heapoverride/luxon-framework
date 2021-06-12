@@ -152,12 +152,7 @@
             return $this;
         }
 
-        /**
-         * Add child elements
-         * @param Element|string $element,...
-         * @return Element
-         */
-        function add(...$elements) {
+        private function _add(...$elements) {
             $depth = $this->depth + 1;
 
             foreach ($elements as $element) {
@@ -170,6 +165,23 @@
                     $text->depth = $depth;
 
                     $this->children[] = $text;
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * Add child elements
+         * @param Element|string $element,...
+         * @return Element
+         */
+        function add(...$elements) {
+            foreach ($elements as $element) {
+                if (is_array($element)) {
+                    $this->_add(...$element);
+                } else {
+                    $this->_add($element);
                 }
             }
 
@@ -229,6 +241,21 @@
          */
         function hasChildren() {
             return !$this->isText() && count($this->children) > 0;
+        }
+
+        /**
+         * Repeat this element n times
+         * @param int $times How many times to repeat this element
+         * @return Element[]
+         */
+        function repeat($times) {
+            $times = intval($times);
+            $array = [];
+
+            for ($i=0; $i<$times; $i++)
+                $array[] = $this;
+
+            return $array;
         }
 
         /**
