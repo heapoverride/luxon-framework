@@ -836,8 +836,48 @@
      * Used to present data in tabular form or to create a table within HTML document
      */
     class Table extends Element {
+        private $tbody;
+
         function __construct() {
             parent::__construct("table");
+        }
+
+        /**
+         * Add header section to the table
+         * @param string|Element $headers,...
+         */
+        function addHeaders(...$headers) {
+            $thead = new TableHeader();
+            $row = new TableRow();
+
+            foreach ($headers as $el) {
+                $row->add((new TableHeaderCell())->add($el));
+            }
+
+            $thead->add($row);
+            $this->add($thead);
+
+            return $this;
+        }
+
+        /**
+         * Add data row to the table
+         * @param string|Element $data,...
+         */
+        function addRow(...$data) {
+            if (!$this->tbody) {
+                $this->tbody = new TableBody(); 
+                $this->add($this->tbody);
+            }
+            $row = new TableRow();
+
+            foreach ($data as $el) {
+                $td = (new TableCell())->add($el);
+                $row->add($td);
+            }
+
+            $this->tbody->add($row);
+            return $this;
         }
     }
 
