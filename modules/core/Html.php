@@ -409,7 +409,7 @@
     class Title extends Element {
         function __construct($title = null) {
             parent::__construct("title");
-            if ($title !== null) parent::setChildren([$title]);
+            if ($title) parent::add($title);
         }
     }
 
@@ -426,11 +426,11 @@
      * Defines the style information for an HTML document
      */
     class Style extends Element {
-        function __construct($target = null) {
-            if ($target !== null) {
+        function __construct($source = null) {
+            if ($source) {
                 parent::__construct("link");
                 parent::set("rel", "stylesheet");
-                parent::set("href", $target);
+                parent::set("href", $source);
                 parent::set("type", "text/css");
                 parent::setHasBody(false);
             } else {
@@ -604,21 +604,26 @@
 
     /**
      * Creates a hyperlink or link
+     * @param string|Element $text
+     * @param string $target Where this link points to
+     * @param bool $new_window When set to `true` this link will be opened in new tab
      */
     class A extends Element {
-        function __construct($target = null) {
+        function __construct($text, $target, $new_window = false) {
             parent::__construct("a");
-            if ($target !== null) {
-                parent::set("href", $target);
-            } else {
-                parent::set("href", "#");
+            parent::set("href", $target);
+
+            if ($new_window) {
+                parent::set("target", "_blank");
             }
+
+            parent::add($text);
         }
     }
 
     class Hyperlink extends A {
-        function __construct($target = null) {
-            parent::__construct($target);
+        function __construct($text, $target, $new_window = false) {
+            parent::__construct($text, $target, $new_window);
         }
     }
 
@@ -775,10 +780,12 @@
 
     /**
      * Defines an input field within an HTML form
+     * @param string $type Type of input
      */
     class Input extends Element {
-        function __construct() {
+        function __construct($type = null) {
             parent::__construct("input");
+            if ($type) parent::set("type", strtolower($type));
             parent::setHasBody(false);
         }
     }
@@ -827,8 +834,9 @@
      * Defines an inline frame which can embed other content
      */
     class Iframe extends Element {
-        function __construct() {
+        function __construct($source = null) {
             parent::__construct("iframe");
+            if ($source) parent::set("src", $source);
         }
     }
 
@@ -975,6 +983,7 @@
 
     /**
      * Used to insert an image within an HTML document
+     * @param string $source Image source
      */
     class Img extends Element {
         function __construct($source = "") {
@@ -1031,28 +1040,69 @@
 
     /**
      * Heading 1
+     * @param string|Element $text
      */
-    class H1 extends Element { function __construct() { parent::__construct("h1"); } }
+    class H1 extends Element { 
+        function __construct($text = null) {
+            parent::__construct("h1");
+            if ($text) parent::add($text);
+        }
+    }
+
     /**
      * Heading 2
+     * @param string|Element $text
      */
-    class H2 extends Element { function __construct() { parent::__construct("h2"); } }
+    class H2 extends Element { 
+        function __construct($text = null) {
+            parent::__construct("h2");
+            if ($text) parent::add($text);
+        }
+    }
+
     /**
      * Heading 3
+     * @param string|Element $text
      */
-    class H3 extends Element { function __construct() { parent::__construct("h3"); } }
+    class H3 extends Element { 
+        function __construct($text = null) {
+            parent::__construct("h3");
+            if ($text) parent::add($text);
+        }
+    }
+
     /**
      * Heading 4
+     * @param string|Element $text
      */
-    class H4 extends Element { function __construct() { parent::__construct("h4"); } }
+    class H4 extends Element { 
+        function __construct($text = null) {
+            parent::__construct("h4");
+            if ($text) parent::add($text);
+        }
+    }
+
     /**
      * Heading 5
+     * @param string|Element $text
      */
-    class H5 extends Element { function __construct() { parent::__construct("h5"); } }
+    class H5 extends Element { 
+        function __construct($text = null) {
+            parent::__construct("h5");
+            if ($text) parent::add($text);
+        }
+    }
+
     /**
      * Heading 6
+     * @param string|Element $text
      */
-    class H6 extends Element { function __construct() { parent::__construct("h6"); } }
+    class H6 extends Element { 
+        function __construct($text = null) {
+            parent::__construct("h6");
+            if ($text) parent::add($text);
+        }
+    }
 
     /**
      * Defines unordered list of items
@@ -1110,151 +1160,181 @@
 
     /**
      * Used to make text font one size smaller than document's base font size
+     * @param string $text
      */
     class Small extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("small");
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Defines preformatted text in an HTML document
+     * @param string $text
      */
     class Pre extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("pre");
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Represents a paragraph in an HTML document
+     * @param string|Element $content
      */
     class P extends Element {
-        function __construct() {
+        function __construct($content = null) {
             parent::__construct("p");
+            if ($content) parent::add($content);
         }
     }
 
     class Paragraph extends P {
-        function __construct() {
-            parent::__construct();
+        function __construct($content = null) {
+            parent::__construct($content);
         }
     }
 
     /**
      * Provides an alternative content if a script type is not supported in browser
+     * @param string|Element $content
      */
     class Noscript extends Element {
-        function __construct() {
+        function __construct($content) {
             parent::__construct("noscript");
+            if ($content) parent::add($content);
         }
     }
 
     /**
      * Used to define important text
+     * @param string $text
      */
     class Strong extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("strong");
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Used to represent a text in some different voice
+     * @param string $text
      */
     class I extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("i");
+            if ($text) parent::add($text);
         }
     }
 
     class Italic extends I {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct();
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Used to render enclosed text with an underline
+     * @param string $text
      */
     class U extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("u");
+            if ($text) parent::add($text);
         }
     }
 
     class Underline extends U {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct();
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Used to make a text bold
+     * @param string $text
      */
     class B extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("b");
+            if ($text) parent::add($text);
         }
     }
 
     class Bold extends B {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct();
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Used to emphasis the content applied within this element
+     * @param string|Element $content
      */
     class Em extends Element {
-        function __construct() {
+        function __construct($content = null) {
             parent::__construct("em");
+            if ($content) parent::add($content);
         }
     }
 
     class Emphasis extends Em {
-        function __construct() {
+        function __construct($content = null) {
             parent::__construct();
+            if ($content) parent::add($content);
         }
     }
 
     /**
      * Defines a text label for `Input` of `Form`
+     * @param string $text
      */
     class Label extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("label");
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Defines a text which displays as a subscript text
+     * @param string $text
      */
     class Sub extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("sub");
+            if ($text) parent::add($text);
         }
     }
 
     class Subscript extends Sub {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct();
+            if ($text) parent::add($text);
         }
     }
 
     /**
      * Defines a text which displays as a superscript text
+     * @param string $text
      */
     class Sup extends Element {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct("sup");
+            if ($text) parent::add($text);
         }
     }
 
     class Superscript extends Sup {
-        function __construct() {
+        function __construct($text = null) {
             parent::__construct();
+            if ($text) parent::add($text);
         }
     }
 
