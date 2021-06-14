@@ -358,6 +358,10 @@
                 return implode("", $html);
             }
         }
+
+        function __toString() {
+            return $this->html(true);
+        }
     }
 
     /**

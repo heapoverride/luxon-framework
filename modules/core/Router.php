@@ -5,6 +5,7 @@
         private static $index = "/^index\.(php|html)$/i";
         private static $disallowed = ['.php', '.sql'];
         private static $continue = false;
+        private static $host = null;
         
         /**
          * Add new route
@@ -13,7 +14,18 @@
          * @param function $action Handler that handles this request
          */
         public static function route($method, $path, $action) {
-            self::$routes[] = new Route($method, $path, $action);
+            self::$routes[] = new Route($method, $path, $action, self::$host);
+        }
+
+        /**
+         * Use virtual host (all subsequent calls to `route()` will use this virtual host)
+         * @param string $host Hostname
+         */
+        public static function use($host = null) {
+            if ($host) {
+                if (!is_string($host)) throw new Exception();
+                self::$host = $host;
+            } else { self::$host = null; }
         }
 
         /**
@@ -146,7 +158,7 @@
                 $route = $routes[$i];
                 self::$continue = false;
                 
-                if ($route->method === '*' || $_SERVER['REQUEST_METHOD'] === $route->method) {
+                if (($route->method === '*' || $_SERVER['REQUEST_METHOD'] === $route->method) && ($route->host === null || $_SERVER['HTTP_HOST'] === $route->host)) {
                     $matches = null;
                     if (preg_match($route->path, $path, $matches) === 1) {
                         array_shift($matches);
@@ -173,14 +185,16 @@
         public $method = null;
         public $path = null;
         public $action = null;
+        public $host = null;
 
-        function __construct($method, $path, $action) {
+        function __construct($method, $path, $action, $host) {
             if (!is_string($method)) $method = '*';
             if (!is_string($path)) $path = '/^\/$/';
 
             $this->method = $method;
             $this->path = $path;
             $this->action = $action;
+            $this->host = $host;
         }
     }
 
