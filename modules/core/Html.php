@@ -14,6 +14,7 @@
         private $name;
         private $children = [];
         private $text = null;
+        private $escape_text = true;
         private $attributes = [];
         private $styles = [];
         private $nobody = false;
@@ -233,8 +234,18 @@
          * @param bool $hasBody
          * @return Element
          */
-        function setHasBody($hasBody) {
+        function setHasBody($hasBody = true) {
             $this->nobody = !$hasBody;
+            return $this;
+        }
+
+        /**
+         * Set if text inside this element is escaped
+         * @param bool $escape
+         * @return Element
+         */
+        function setEscapeText($escape = true) {
+            $this->escape_text = $escape;
             return $this;
         }
 
@@ -318,7 +329,11 @@
                 if ($format && $expand) $html[] = "\n";
             } else {
                 // text
-                $html[] = htmlspecialchars($this->text);
+                if ($this->escape_text === true) {
+                    $html[] = htmlspecialchars($this->text);
+                } else {
+                    $html[] = $this->text;
+                }
             }
 
             // children
@@ -366,6 +381,7 @@
 
     /**
      * Text element
+     * @param string $text Text element's text
      */
     class Text extends Element {
         function __construct($text = null) {
@@ -380,6 +396,7 @@
 
     /**
      * TextRef element
+     * @param string $text Text element's text (pass by reference)
      */
     class TextRef extends Element {
         function __construct(&$text) {
@@ -409,11 +426,12 @@
 
     /**
      * Defines the title or name of an HTML document
+     * @param string $title Document's title text
      */
     class Title extends Element {
-        function __construct($title = null) {
+        function __construct($title) {
             parent::__construct("title");
-            if ($title) parent::add($title);
+            parent::add($title);
         }
     }
 
@@ -428,6 +446,7 @@
 
     /**
      * Defines the style information for an HTML document
+     * @param string $source Path to external stylesheet file (optional)
      */
     class Style extends Element {
         function __construct($source = null) {
@@ -633,10 +652,16 @@
 
     /**
      * Represents a relationship between current document and an external resource
+     * @param string $relation Relationship between the current document and the linked document
+     * @param string $target Path to the externally linked document
+     * @param string $media_type Media type of the linked document (for example: "text/css")
      */
     class Link extends Element {
-        function __construct($target) {
+        function __construct($relation, $target, $media_type = null) {
             parent::__construct("link");
+            parent::set("rel", $relation);
+            parent::set("href", $target);
+            if ($media_type) parent::set("type", $media_type);
         }
     }
 
@@ -805,14 +830,14 @@
 
     /**
      * Used to declare the JavaScript within HTML document
+     * @param string $source Path to external JavaScript file
+     * @param string $script JavaScript code
      */
     class Script extends Element {
-        function __construct($source = null) {
+        function __construct($source = null, $script = null) {
             parent::__construct("script");
-
-            if ($source !== null) {
-                parent::set("src", $source);
-            }
+            if ($source) parent::set("src", $source);
+            if ($script) parent::add((new Text($script))->setEscapeText(false));
         }
     }
 
@@ -836,6 +861,7 @@
 
     /**
      * Defines an inline frame which can embed other content
+     * @param string $source Address of the document to embed in this element
      */
     class Iframe extends Element {
         function __construct($source = null) {
@@ -1005,6 +1031,8 @@
 
     /**
      * It defines multiple media recourses for different media element such as `Picture`, `Video`, and `Audio`
+     * @param string $source URL of the media file
+     * @param string $type MIME-type of the resource (for example: "audio/mpeg")
      */
     class Source extends Element {
         function __construct($source = "", $type = "") {
