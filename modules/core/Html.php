@@ -800,10 +800,19 @@
 
     /**
      * Used to define an HTML form
+     * @param string $method Specifies the HTTP method to use when sending form-data
+     * @param string $action Specifies where to send the form-data when a form is submitted
+     * @param bool $multipart This must be set to `true` if the user will upload a file through the form
      */
     class Form extends Element {
-        function __construct() {
+        function __construct($method = null, $action = null, $multipart = false) {
             parent::__construct("form");
+
+            if (!$method) $method = "post";
+            parent::set("method", strtolower($method));
+
+            if ($action) parent::set("action", $action);
+            if ($multipart) parent::set("enctype", "multipart/form-data");
         }
     }
 
