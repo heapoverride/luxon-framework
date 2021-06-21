@@ -1,3 +1,5 @@
+*Better documentation coming in the future...*
+
 # What is Luxon?
 Luxon is powerful and minimal framework and provides a solid base for your next website. All Luxon's core modules are JSdoc'ed so that your code editor can provide you with helpful information about each method (I use Visual Studio Code and it supports JSdoc).
 
@@ -65,6 +67,8 @@ Router is one of Luxon's core modules that is used to route incoming request to 
 ### Adding new routes
 For example, to route GET requests to our front page we could use something like this
 ```php
+<?php
+
 Router::route("GET", "/^\/$/", function() {
     view('index');
 });
@@ -72,12 +76,16 @@ Router::route("GET", "/^\/$/", function() {
 
 If we have a controller named `FrontController` with static function named `get_frontPage` we could tell Router that we want that function handle this request
 ```php
+<?php
+
 Router::route("GET", "/^\/$/", ['FrontController', 'get_frontPage']);
 ```
 
 We can also specify capture groups if we want to extract certain values from the requested URI. This example shows how you can get product category, subcategory and optional page number from the URI.
 This would handle requests like `GET /products/office-supplies/chairs/12/` and `GET /products/office-supplies/chairs/`. I do recommend you use separate controllers with more complex routes like this one.
 ```php
+<?php
+
 Router::route("GET", "/^\/products\/([\w\-\_]*)\/([\w\-\_]*)\/?(\d*?)\/?$/", function($maincat, $subcat, $pagenum) {
     // handle request here
     if ($pagenum === "") $pagenum = 0;
@@ -92,11 +100,9 @@ In MVC (model-view-controller) model the controller responds to the user input a
 ```php
 <?php
 
-    Router::route("GET", "/^\/$/", ['DemoController', 'viewIndex']);
-    Router::route("POST", "/^\/login\/?$/", ['DemoController', 'doLogin']);
-    Router::route("POST", "/^\/register\/?$/", ['DemoController', 'doRegister']);
-
-?>
+Router::route("GET", "/^\/$/", ['DemoController', 'viewIndex']);
+Router::route("POST", "/^\/login\/?$/", ['DemoController', 'doLogin']);
+Router::route("POST", "/^\/register\/?$/", ['DemoController', 'doRegister']);
 ```
 
 **/controllers/DemoController.php**
@@ -129,7 +135,7 @@ In MVC (model-view-controller) model the controller responds to the user input a
                 // fetch one record from QueryResult and make sure we actually got a record
                 if (($row = $result->fetch()) !== null) {
                     // test password
-                    if (Password::test($password, $row['salt'], $row['password'])) {
+                    if (Password::verify($password, $row['password'])) {
                         Session::set('user', $row);
                     }
                 }
@@ -144,15 +150,13 @@ In MVC (model-view-controller) model the controller responds to the user input a
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            $salt = Password::salt();
-            $hash = Password::hash($password, $salt);
+            $hash = Password::hash($password);
 
             $result = ORM::instance()
                 ->insert('users', [
                     'username'  => $username,
                     'email'     => $email,
-                    'password'  => $hash,
-                    'salt'      => $salt
+                    'password'  => $hash
                 ])->exec();
 
             // do something with $result?
@@ -163,8 +167,6 @@ In MVC (model-view-controller) model the controller responds to the user input a
         }
 
     }
-
-?>
 ```
 
 # 3. Models
