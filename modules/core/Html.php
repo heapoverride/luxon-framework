@@ -1334,12 +1334,14 @@
 
     /**
      * Defines a text label for `Input` of `Form`
-     * @param string $text
+     * @param string $text Specifies the label's text
+     * @param string $for Specifies the id of the form element the label should be bound to
      */
     class Label extends Element {
-        function __construct($text = null) {
+        function __construct($text = null, $for = null) {
             parent::__construct("label");
             if ($text) parent::add($text);
+            if ($for) parent::set("for", $for);
         }
     }
 
