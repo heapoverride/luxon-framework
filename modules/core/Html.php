@@ -203,14 +203,14 @@
         /**
          * Add or set attribute value
          * @param string $name
-         * @param string $value
+         * @param string|Text|TextRef $value
          * @return Element
          */
-        function set($name, $value = null) {
+        function set($name, $value) {
             $name = strtolower($name);
 
-            if ($value !== null && !is_string($value)) {
-                $value = strval($value);
+            if (!($value instanceof Text) && !($value instanceof TextRef)) {
+                $value = new Text($value);
             }
 
             $this->attributes[$name] = $value;
