@@ -11,6 +11,7 @@
         /**
          * Hash a plaintext password
          * @param string $password Plaintext password
+         * @return string
          */
         public static function hash($password) {
             return self::_hash($password, random_bytes(self::$salt_length));
@@ -20,6 +21,7 @@
          * Verify password hash
          * @param string $password Plaintext password user is authenticating with
          * @param string $hash Password hash that was originally created for this user
+         * @return bool
          */
         public static function verify($password, $hash) {
             $salt = substr($hash, 0, self::$salt_length * 2);
