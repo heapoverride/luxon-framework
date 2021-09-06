@@ -429,9 +429,9 @@
      * @param string $title Document's title text
      */
     class Title extends Element {
-        function __construct($title) {
+        function __construct($title = null) {
             parent::__construct("title");
-            parent::add($title);
+            if ($title !== null) parent::add($title);
         }
     }
 
