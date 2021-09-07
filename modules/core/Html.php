@@ -1465,7 +1465,7 @@ class Superscript extends Sup {
 }
 
 /**
- * Defines a comment\ 
+ * Defines a comment\
  * Comments are not displayed in the browsers but they're visible in the source code!
  * @param string $text
  */
