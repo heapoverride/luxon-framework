@@ -252,6 +252,18 @@ class Element {
 	}
 
 	/**
+	 * Set all attributes at once
+	 * @param array $attributes
+	 * @return Element
+	 */
+	function setAttributes($attributes) {
+		foreach ($attributes as $key => $value) {
+			$this->set($key, $value);
+		}
+		return $this;
+	}
+
+	/**
 	 * Get attribute value by it's name
 	 * @param string $name
 	 * @return string|null
