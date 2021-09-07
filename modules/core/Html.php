@@ -1463,3 +1463,17 @@ class Superscript extends Sup {
 		if ($text) parent::add($text);
 	}
 }
+
+/**
+ * Defines a comment\ 
+ * Comments are not displayed in the browsers but they're visible in the source code!
+ * @param string $text
+ */
+class Comment extends Element {
+    function __construct($text = null)
+    {
+        parent::setBefore("<!-- ");
+        parent::setAfter(" -->");
+        parent::setText($text);
+    }
+}
