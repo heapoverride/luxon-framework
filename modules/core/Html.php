@@ -338,9 +338,35 @@ class Element {
 	}
 
 	/**
+	 * Insert child element(s) at specific `$index`
+	 * @param int $index
+	 * @param Element|string $element,...
+	 * @return Element
+	 */
+	function insert($index, ...$elements) {
+		array_splice($this->children, $index, 0, ...$elements);
+	}
+
+	/**
+	 * Iterate over child elements
+	 * @param function $callback (`$index`, `$element`)
+	 * @return Element
+	 */
+	function forEach($callback) {
+		$i = 0;
+
+		foreach ($this->children as $child) {
+			$callback($i, $child);
+			$i++;
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Print the HTML source code
-	 * @param bool $return Set to `true` to return the generated code instead of writing it to response body
-	 * @param bool $format Set to `true` to format the generated HTML source code
+	 * @param bool $return Set to `true` to return the generated code instead of writing it to the response body
+	 * @param bool $format Set to `true` to format the generated HTML source code and make it look real nice
 	 * @return string
 	 */
 	function html($return = false, $format = false) {
