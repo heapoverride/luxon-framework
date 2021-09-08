@@ -19,8 +19,9 @@ sudo apt install php libapache2-mod-php php-mcrypt php-mysql
 ```
 
 ### To configure PHP and enable certain extensions (curl, mysqli!)
+Replace `PHP_VERSION` with the PHP version you have installed (check with `ls /etc/php` or `php --version`).
 ```sh
-sudo nano /etc/php/7.4/apache2/php.ini
+sudo nano /etc/php/PHP_VERSION/apache2/php.ini
 sudo a2enmod rewrite
 ```
 
