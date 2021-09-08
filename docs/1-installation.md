@@ -80,7 +80,7 @@ sudo service apache2 restart
 ```sh
 cd /var/www/html
 sudo chown -R www-data:www-data ./
-sudo chmod -R 755 ./
+sudo chmod -R g+r+w+x ./
 ```
 
 ## Configure luxon framework
