@@ -8,10 +8,16 @@
          */
         public static function connect() {
             self::$connection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
-            if (self::$connection->connect_errno) {
-                throw new Exception('Database connection failed: '.self::$connection->connect_error);
+            if (!self::$connection) {
+                throw new Exception("Database connection error");
+            } else {
+                if (self::$connection->connect_errno) {
+                    throw new Exception("Database connection error: ".self::$connection->connect_error);
+                } else {
+                    // connected
+                    self::$connection->set_charset("utf8mb4");
+                }
             }
-            self::$connection->set_charset("utf8mb4");
         }
 
         /** 

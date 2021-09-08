@@ -7,6 +7,35 @@ sudo apt update
 sudo apt install mariadb-server
 sudo mysql_secure_installation
 ```
+Maybe you want to create a database and a user for luxon framework to automatically connect to?\
+Run `mariadb` (or `mysql`) to enter mysql commandline client and execute the SQL queries/commands below.
+```sql
+-- This will create a database 'luxon' for you (feel free to change it to whatever you want to use, I don't mind).
+CREATE DATABASE luxon;
+
+-- This command creates a new user 'luxon' and makes it so it is only accessible on localhost and then
+-- grants it access to every database and type (*.*).
+CREATE USER 'luxon'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'luxon'@'localhost';
+GRANT USAGE ON *.* TO 'luxon'@'localhost' IDENTIFIED BY PASSWORD 'password';
+FLUSH PRIVILEGES;
+
+-- You might want to add an another user for remote management later 
+-- (I use HeidiSQL for this on Windows because it's so beautiful)
+```
+Make sure to update database connection info in your `config/database.php`!
+
+### [Optional] Enable remote logins to MySQL/MariaDB server
+Add few lines at the bottom of MySQL configuration file and then restart mysql/mariadb\
+**/etc/mysql/my.cnf**
+```conf
+[mysqld]
+skip-networking = 0
+bind-address = 0.0.0.0
+```
+```sh
+service mariadb restart
+```
 
 ### To install apache2 run the following commands
 ```sh
@@ -15,7 +44,7 @@ sudo apt install apache2
 
 ### To install and configure PHP run the following commands
 ```sh
-sudo apt install php libapache2-mod-php php-mcrypt php-mysql
+sudo apt install php libapache2-mod-php php-{curl,mysql}
 ```
 
 ### To configure PHP and enable certain extensions (curl, mysqli!)
