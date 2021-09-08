@@ -13,9 +13,7 @@
             } else if (is_file($path) && preg_match("/\.php$/i", $path) === 1) {
                 require_once $path;
             } else {
-                if (!mkdir($path, 0555, true)) {
-                    throw new Exception("Failed to create directory: $path");
-                }
+                throw new Exception("Failed to load directory or file: $path");
             }
         }
 
