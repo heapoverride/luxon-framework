@@ -27,3 +27,10 @@ class Frontend {
 }
 ```
 
+### HTTP methods
+```php
+Router::route("*", "/^\/$/", function() { echo "You sent some other request!"; });
+Router::route("GET", "/^\/$/", function() { echo "You sent GET request!"; });
+Router::route("POST", "/^\/$/", function() { echo "You sent POST request!"; });
+Router::route("DELETE", "/^\/$/", function() { echo "You sent DELETE request!"; });
+```
