@@ -50,9 +50,11 @@ sudo apt install php libapache2-mod-php php-{curl,mysql}
 ### To configure PHP and enable certain extensions (curl, mysqli!)
 Replace `PHP_VERSION` with the PHP version you have installed (check with `ls /etc/php` or `php --version`).
 ```sh
-sudo nano /etc/php/PHP_VERSION/apache2/php.ini
 sudo a2enmod rewrite
+sudo nano /etc/php/PHP_VERSION/apache2/php.ini
 ```
+In `php.ini` locate the lines `;extension=mysqli` and `;extension=curl` and remove the\
+semicolon in front of those lines to uncomment them.
 
 ### To install luxon framework run the following commands
 Notice the period ` .`!
