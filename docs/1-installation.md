@@ -1,6 +1,6 @@
 # Installation on Ubuntu
 
-### To install and configure mariadb run the following commands
+### [Optional] Install and configure MariaDB/MySQL server
 You can skip this step if you aren't going to use Luxon's `Database` features or if your database server is remote.
 ```sh
 sudo apt update
@@ -37,17 +37,17 @@ bind-address = 0.0.0.0
 service mariadb restart
 ```
 
-### To install apache2 run the following commands
+### Install apache2 web server
 ```sh
 sudo apt install apache2
 ```
 
-### To install and configure PHP run the following commands
+### Install PHP with cURL and MySQL extensions
 ```sh
 sudo apt install php libapache2-mod-php php-{curl,mysql}
 ```
 
-### To configure PHP and enable certain extensions (curl, mysqli!)
+### Configure PHP and enable curl and mysqli extensions
 Replace `PHP_VERSION` with the PHP version you have installed (check with `ls /etc/php` or `php --version`).
 ```sh
 sudo a2enmod rewrite
@@ -56,8 +56,8 @@ sudo nano /etc/php/PHP_VERSION/apache2/php.ini
 In `php.ini` locate the lines `;extension=mysqli` and `;extension=curl` and remove the\
 semicolon in front of those lines to uncomment them.
 
-### To install luxon framework run the following commands
-Notice the period ` .`!
+### Install luxon framework
+Notice the period in the `git clone` command ` .`!
 ```sh
 cd /var/www/html
 sudo git clone https://github.com/UnrealSecurity/luxon-framework.git .
@@ -69,8 +69,8 @@ cd /var/www/html
 sudo mkdir {assets,controllers,models,other}
 ```
 
-### Restart apache2
-This will now enable mod-rewrite and luxon framework's .htaccess
+### Restart apache2 web server
+This will enable `mod_rewrite` and luxon framework's `.htaccess` rules
 ```sh
 sudo service apache2 restart
 ```
