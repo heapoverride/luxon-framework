@@ -11,7 +11,7 @@ Router::route("GET", "/^\/$/", function() {
 ```
 
 ### Route with a handler (array)
-This tells Router to access class `Frontend` and call it's (static) function `Home`.
+This tells Router to access class `Frontend` and call it's (static) function `Home`.\
 **routes/routes.php**
 ```php
 Router::route("GET", "/^\/$/", ["Frontend", "Home"]);
