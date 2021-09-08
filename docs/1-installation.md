@@ -1,6 +1,7 @@
-# Installing mariadb, apache2, php and luxon framework
+# Installation on Ubuntu
 
 ### To install and configure mariadb run the following commands
+You can skip this step if you aren't going to use Luxon's `Database` features or if your database server is remote.
 ```sh
 sudo apt update
 sudo apt install mariadb-server
