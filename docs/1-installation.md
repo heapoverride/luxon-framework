@@ -41,7 +41,7 @@ service mariadb restart
 ```sh
 sudo apt install apache2
 ```
-Optionally you can [install NGINX]() instead of apache2.
+Optionally you can [install NGINX](nginx/installation.md) instead of apache2.
 
 ### Install PHP with cURL and MySQL extensions
 ```sh
