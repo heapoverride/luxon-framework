@@ -1,7 +1,7 @@
 # Router and routes
 Incoming request is matched against routes you have defined. If a match is found, the request\
-will be then handled by the handler associated with that route, otherwise a __Route not Found__ error will be displayed.\
-\
+will be then handled by the handler associated with that route, otherwise a __Route not Found__ error will be displayed.
+
 ### Route with a handler (function)
 ```php
 Router::route("GET", "/^\/$/", function() {
