@@ -41,6 +41,7 @@ service mariadb restart
 ```sh
 sudo apt install apache2
 ```
+Optionally you can [install NGINX]() instead of apache2.
 
 ### Install PHP with cURL and MySQL extensions
 ```sh
@@ -118,3 +119,4 @@ If you get a __Route not Found__ error, this means that your .htaccess file is w
 ---
 If you're here it hopefully means that luxon is properly installed and you see a text\
 `This is the default page for web servers using Luxon.` when you navigate to your website.
+
