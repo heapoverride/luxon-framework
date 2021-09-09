@@ -25,9 +25,10 @@ class Messages {
 
 	/**
 	 * Pop one message from top of the queue
-	 * @return string
+	 * @return string|null
 	 */
 	public static function pop() {
+		if (self::count() === 0) return null;
 		return array_shift($_SESSION['LUXON_MESSAGES']);
 	}
 
