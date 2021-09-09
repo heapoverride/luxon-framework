@@ -16,16 +16,16 @@ class Messages {
 	}
 
 	/**
-	 * Push message to queue
-	 * @param string $str Message to push
+	 * Push message to top of the queue
+	 * @param mixed $data Message to push
 	 */
-	public static function push($str) {
-		$_SESSION['LUXON_MESSAGES'][] = strval($str);
+	public static function push($data) {
+		$_SESSION['LUXON_MESSAGES'][] = $data;
 	}
 
 	/**
-	 * Pop one message from top of the queue
-	 * @return string|null
+	 * Pop message from top of the queue or null if there are no more messages
+	 * @return mixed|null
 	 */
 	public static function pop() {
 		if (self::count() === 0) return null;
