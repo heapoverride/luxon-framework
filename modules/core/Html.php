@@ -131,6 +131,25 @@ class Element {
 	}
 
 	/**
+	 * Add class name to element's class list
+	 * @param string $className
+	 * @return Element
+	 */
+	function addClass($className) {
+		$this->sa_str($className);
+
+		$classList = [];
+		if ($class = $this->get("class")) {
+			$classList = explode(" ", $class);
+		}
+		
+		$classList[] = $className;
+		$this->setClassList($classList);
+
+		return $this;
+	}
+
+	/**
 	 * Set element that appears before this element
 	 * @param Element|string $element
 	 * @return Element
@@ -390,13 +409,11 @@ class Element {
 			$html[] = $indent."<".$this->name;
 
 			// attributes
-			if (count($this->attributes) !== 0) {
-				foreach ($this->attributes as $name => $value) {
-					if ($value !== null) {
-						$html[] = " $name=\"$value\"";
-					} else {
-						$html[] = " $name";
-					}
+			foreach ($this->attributes as $name => $value) {
+				if ($value !== null) {
+					$html[] = " $name=\"$value\"";
+				} else {
+					$html[] = " $name";
 				}
 			}
 
