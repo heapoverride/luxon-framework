@@ -20,7 +20,7 @@ class Messages {
 	 * @param string $str Message to push
 	 */
 	public static function push($str) {
-		$_SESSION['LUXON_MESSAGES'][] = $str;
+		$_SESSION['LUXON_MESSAGES'][] = strval($str);
 	}
 
 	/**
