@@ -20,7 +20,7 @@ class Messages {
 	 * @param mixed $data Message to push
 	 */
 	public static function push($data) {
-		$_SESSION['LUXON_MESSAGES'][] = $data;
+		$_SESSION['LUXON_MESSAGES'][] = serialize($data);
 	}
 
 	/**
@@ -29,7 +29,7 @@ class Messages {
 	 */
 	public static function pop() {
 		if (self::count() === 0) return null;
-		return array_shift($_SESSION['LUXON_MESSAGES']);
+		return unserialize(array_shift($_SESSION['LUXON_MESSAGES']));
 	}
 
 	/**
