@@ -239,15 +239,16 @@ class Element {
 	 * @param string|Text|TextRef $value
 	 * @return Element
 	 */
-	function set($name, $value) {
-		$name = strtolower($name);
+	function set($name, $value = null) {
+		if ($value !== null) {
+			$name = strtolower($name);
 
-		if (!($value instanceof Text) && !($value instanceof TextRef)) {
-			$value = new Text($value);
+			if (!($value instanceof Text) && !($value instanceof TextRef)) {
+				$value = new Text($value);
+			}
 		}
 
 		$this->attributes[$name] = $value;
-
 		return $this;
 	}
 
