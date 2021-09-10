@@ -364,7 +364,8 @@ class Element {
 	 * @return Element
 	 */
 	function insert($index, ...$elements) {
-		array_splice($this->children, $index, 0, ...$elements);
+		array_splice($this->children, $index, 0, $elements);
+		return $this;
 	}
 
 	/**
