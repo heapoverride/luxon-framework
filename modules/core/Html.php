@@ -992,12 +992,14 @@ class Table extends Element {
 
 	/**
 	 * Add header section to the table
-	 * @param string|Element $headers,...
+	 * @param string[]|Element[] $headers
+	 * @param string[] $props
 	 */
-	function addHeaders(...$headers) {
-		$thead = new TableHeader();
-		$row = new TableRow();
+	function addHeaders($headers, $props = []) {
+		$thead = (new TableHeader())
+		->setAttributes($props);
 
+		$row = new TableRow();
 		foreach ($headers as $el) {
 			$row->add((new TableHeaderCell())->add($el));
 		}
@@ -1010,14 +1012,17 @@ class Table extends Element {
 
 	/**
 	 * Add data row to the table
-	 * @param string|Element $data,...
+	 * @param string[]|Element[] $data
+	 * @param string[] $props
 	 */
-	function addRow(...$data) {
+	function addRow($data, $props = []) {
 		if (!$this->tbody) {
 			$this->tbody = new TableBody(); 
 			$this->add($this->tbody);
 		}
-		$row = new TableRow();
+
+		$row = (new TableRow())
+		->setAttributes($props);
 
 		foreach ($data as $el) {
 			$td = (new TableCell())->add($el);
