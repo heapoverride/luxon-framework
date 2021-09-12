@@ -424,7 +424,7 @@ class Element {
 				foreach ($this->styles as $name => $value) {
 					$styles[] = "$name: $value;";
 				}
-				$html[] = " styles=\"".implode(" ", $styles)."\"";
+				$html[] = " style=\"".implode(" ", $styles)."\"";
 			}
 
 			if (!$this->nobody) $html[] = ">";
