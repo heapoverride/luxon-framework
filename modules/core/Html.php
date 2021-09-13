@@ -11,7 +11,7 @@ namespace Html;
  * Defines a HTML element
  */
 class Element {
-	private $name;
+	private $name = null;
 	private $children = [];
 	private $text = null;
 	private $escape_text = true;
@@ -22,8 +22,8 @@ class Element {
 	private $after = null;
 	private $depth = 0;
 
-	function __construct($name) {
-		$this->name = strtolower($name);
+	function __construct($name = null) {
+		if ($name !== null) $this->name = strtolower($name);
 	}
 
 	private function indent($depth) {
@@ -47,6 +47,22 @@ class Element {
 		for ($i=0; $i<count($arr); $i++) {
 			$arr[$i] = $this->sa_str($arr[$i]);
 		}
+	}
+
+	/**
+	 * Set element's tag name
+	 * @param string $name
+	 */
+	function setTagName($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * Get element's tag name
+	 * @return string
+	 */
+	function getTagName() {
+		return $this->name;
 	}
 
 	/**
@@ -272,6 +288,27 @@ class Element {
 	}
 
 	/**
+	 * Get if this element has specific attribute
+	 * @param string $name
+	 * @return bool
+	 */
+	function has($name) {
+		return array_key_exists($name, $this->attributes);
+	}
+
+	/**
+	 * Get attribute value by it's name or null
+	 * @param string $name
+	 * @return string|null
+	 */
+	function get($name) {
+		if ($this->has($name)) {
+			return $this->attributes[$name];
+		}
+		return null;
+	}
+
+	/**
 	 * Set all attributes at once
 	 * @param array $attributes
 	 * @return Element
@@ -284,15 +321,31 @@ class Element {
 	}
 
 	/**
-	 * Get attribute value by it's name
-	 * @param string $name
-	 * @return string|null
+	 * Get all attributes
+	 * @return array
 	 */
-	function get($name) {
-		if (array_key_exists($name, $this->attributes)) {
-			return $this->attributes[$name];
+	function getAttributes() {
+		$attributes = [];
+
+		foreach ($this->attributes as $key => $value) {
+			$attributes[$key] = $value;
 		}
-		return null;
+	
+		return $attributes;
+	}
+
+	/**
+	 * Get all styles
+	 * @return array
+	 */
+	function getStyles() {
+		$styles = [];
+
+		foreach ($this->styles as $key => $value) {
+			$styles[$key] = $value;
+		}
+	
+		return $styles;
 	}
 
 	/**
@@ -487,7 +540,7 @@ class Element {
  */
 class Text extends Element {
 	function __construct($text = null) {
-		parent::__construct("");
+		parent::__construct();
 		if ($text !== null) $this->setText($text);
 	}
 
@@ -502,7 +555,7 @@ class Text extends Element {
  */
 class TextRef extends Element {
 	function __construct(&$text) {
-		parent::__construct("");
+		parent::__construct();
 		$this->setTextRef($text);
 	}
 }
