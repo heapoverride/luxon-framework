@@ -240,7 +240,7 @@ class Element {
 				$element->depth = $depth;
 
 				$this->children[] = $element;
-			} else {
+			} else if ($element !== null) {
 				$text = new Text(strval($element));
 				$text->depth = $depth;
 
