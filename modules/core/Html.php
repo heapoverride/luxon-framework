@@ -299,7 +299,7 @@ class Element {
 	/**
 	 * Get attribute value by it's name or null
 	 * @param string $name
-	 * @return string|null
+	 * @return Text|TextRef|null
 	 */
 	function get($name) {
 		if ($this->has($name)) {
@@ -422,7 +422,7 @@ class Element {
 	}
 
 	/**
-	 * Iterate over child elements
+	 * Iterate over this element's child elements
 	 * @param function $callback (`$index`, `$element`)
 	 * @return Element
 	 */
@@ -435,6 +435,32 @@ class Element {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * @param Element $element
+	 */
+	private function _findFirst(&$name, &$value, $element, &$result) {
+		if ($element->has($name) && $element->get($name) == $value) {
+			$result = $element;
+			return;
+		}
+
+		foreach ($element->getChildren() as $child) {
+			$this->_findFirst($name, $value, $child, $result);
+		}
+	}
+
+	/**
+	 * Search recursively for first element that has a specific attribute (with specific value)
+	 * @param string $name Attribute name
+	 * @param string|int $value
+	 * @return Element
+	 */
+	function findFirst($name, $value = null) {
+		$result = null;
+		$this->_findFirst($name, $value, $this, $result);
+		return $result;
 	}
 
 	/**
