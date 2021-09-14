@@ -881,6 +881,22 @@ class LineBreak extends Br {
 }
 
 /**
+ * Produces a horizontal line
+ */
+class Hr extends Element {
+	function __construct() {
+		parent::__construct("hr");
+		parent::setHasBody(false);
+	}
+}
+
+class Line extends Hr {
+	function __construct() {
+		parent::__construct();
+	}
+}
+
+/**
  * Used to represent a clickable button
  */
 class Button extends Element {
