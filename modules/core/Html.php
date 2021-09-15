@@ -460,23 +460,23 @@ class Element {
 	}
 
 	/**
-	 * Search recursively for first element with the same type as provided `$instance`
-	 * @param Element $instance New instance of Html\Element
+	 * Search recursively for first element with the same class name as provided `$class`
+	 * @param string $class Class name
 	 * @return Element|null
 	 */
-	function findFirstType(&$instance) {
+	function findFirstType($class) {
 		$result = null;
-		$this->_findFirstType($instance, $this, $result);
+		$this->_findFirstType($class, $this, $result);
 		return $result;
 	}
-	private function _findFirstType(&$instance, $element, &$result) {
-		if ($element instanceof $instance) {
+	private function _findFirstType($class, $element, &$result) {
+		if (is_a($element, $class)) {
 			$result = $element;
 			return;
 		}
 
 		foreach ($element->getChildren() as $child) {
-			$this->_findFirstType($instance, $child, $result);
+			$this->_findFirstType($class, $child, $result);
 		}
 	}
 
