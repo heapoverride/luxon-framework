@@ -438,8 +438,16 @@ class Element {
 	}
 
 	/**
-	 * @param Element $element
+	 * Search recursively for first element with specified attribute name and value
+	 * @param string $name Attribute name
+	 * @param string|int $value
+	 * @return Element|null
 	 */
+	function findFirst($name, $value = null) {
+		$result = null;
+		$this->_findFirst($name, $value, $this, $result);
+		return $result;
+	}
 	private function _findFirst(&$name, &$value, $element, &$result) {
 		if ($element->has($name) && $element->get($name) == $value) {
 			$result = $element;
@@ -452,15 +460,24 @@ class Element {
 	}
 
 	/**
-	 * Search recursively for first element that has a specific attribute (with specific value)
-	 * @param string $name Attribute name
-	 * @param string|int $value
-	 * @return Element
+	 * Search recursively for first element with the same type as provided `$instance`
+	 * @param Element $instance New instance of Html\Element
+	 * @return Element|null
 	 */
-	function findFirst($name, $value = null) {
+	function findFirstType(&$instance) {
 		$result = null;
-		$this->_findFirst($name, $value, $this, $result);
+		$this->_findFirstType($instance, $this, $result);
 		return $result;
+	}
+	private function _findFirstType(&$instance, $element, &$result) {
+		if ($element instanceof $instance) {
+			$result = $element;
+			return;
+		}
+
+		foreach ($element->getChildren() as $child) {
+			$this->_findFirstType($instance, $child, $result);
+		}
 	}
 
 	/**
