@@ -29,6 +29,15 @@
         }
 
         /**
+         * Change database to be used with subsequent database queries
+         * @param string $db Database name
+         * @return bool
+         */
+        public static function use($db) {
+            return self::$connection->select_db($db);
+        }
+
+        /**
          * Constructs a safe query string using a query template\
          * Example: Database::template('INSERT INTO users $ VALUES ?', ['firstName', 'lastName'], ['John', 'Connor'])
          * @param string $template Query template
