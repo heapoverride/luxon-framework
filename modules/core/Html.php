@@ -460,6 +460,16 @@ class Element {
 	}
 
 	/**
+	 * Test if this element's class name is `$class`
+	 * false otherwise
+	 * @param string $class
+	 * @return bool
+	 */
+	function is($class) {
+		return is_a($this, $class);
+	}
+
+	/**
 	 * Search recursively for first element with the same class name as provided `$class`
 	 * @param string $class Class name
 	 * @return Element|null
@@ -470,7 +480,7 @@ class Element {
 		return $result;
 	}
 	private function _findFirstType($class, $element, &$result) {
-		if (is_a($element, $class)) {
+		if ($element->is($class)) {
 			$result = $element;
 			return;
 		}
