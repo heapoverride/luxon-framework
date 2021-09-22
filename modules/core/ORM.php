@@ -14,7 +14,7 @@ class ORM {
 
 	private function _is_valid_field_name($name) {
 		if (!is_string($name)) return false;
-		return preg_match('/^[a-z0-9\.\-_]*$/i', $name) === 1;
+		return preg_match('/^[A-Z0-9 \.\-_]*$/i', $name) === 1;
 	}
 
 	/**

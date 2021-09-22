@@ -166,7 +166,7 @@
 
         public static function is_valid_field_name($name) {
             $name = strval($name);
-            return preg_match('/^.[A-z0-9_\.\(\)]*$/', $name) === 1;
+            return preg_match('/^[A-Z0-9 \.\-_]*$/i', $name) === 1;
         }
 
         public static function get_array_d($array) {
