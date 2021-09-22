@@ -1107,7 +1107,7 @@ class Iframe extends Element {
  * Used to present data in tabular form or to create a table within HTML document
  */
 class Table extends Element {
-	private $tbody;
+	private $tbody, $tfoot;
 
 	function __construct() {
 		parent::__construct("table");
@@ -1153,6 +1153,28 @@ class Table extends Element {
 		}
 
 		$this->tbody->add($row);
+		return $this;
+	}
+	
+	/**
+	 * Add footer section to table
+	 * @param string[]|Element[] $data
+	 * @param string[] $props
+	 */
+	function addFooter($data, $props = []) {
+		if (!$this->tfoot) {
+			$this->tfoot = new TableFooter(); 
+			$this->add($this->tfoot);
+		}
+
+		$row = new TableRow();
+		$row->setAttributes($props);
+
+		foreach ($data as $el) {
+			$row->add((new TableCell())->add($el));
+		}
+
+		$this->tfoot->add($row);
 		return $this;
 	}
 }
