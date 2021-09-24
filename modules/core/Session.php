@@ -43,8 +43,8 @@ class Session {
 	 * Retrieve stored objects for this session (Luxon calls this method automatically so you don't have to)
 	 */
 	public static function retrieve() {
-		if (isset($_SESSION['LUXION_SESSION'])) {
-			$storage = unserialize($_SESSION['LUXION_SESSION']);
+		if (isset($_SESSION['LUXON_SESSION'])) {
+			$storage = unserialize($_SESSION['LUXON_SESSION']);
 			if (!is_array($storage)) throw new Exception();
 			self::$storage = $storage;
 		}
@@ -54,7 +54,7 @@ class Session {
 	 * Commits your changes so that they're available next time you call Session::retrieve()
 	 */
 	public static function commit() {
-		$_SESSION['LUXION_SESSION'] = serialize(self::$storage);
+		$_SESSION['LUXON_SESSION'] = serialize(self::$storage);
 	}
 
 	/**
