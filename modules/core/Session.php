@@ -56,7 +56,34 @@ class Session {
 	public static function commit() {
 		$_SESSION['LUXION_SESSION'] = serialize(self::$storage);
 	}
+
+	/**
+	 * Starts a new session
+	 */
+	public static function start() {
+		if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+	}
+
+	/**
+	 * Ends the session and tell client to remove session cookie
+	 */
+	public static function end() {
+		if (session_status() === PHP_SESSION_ACTIVE) {
+			if ($session_id = session_name()) {
+				session_destroy();
+				setcookie($session_id, "", time() - 3600, "/");
+			}
+		}
+	}
+
+	/**
+	 * Ends a session and then starts a new one
+	 */
+	public static function restart() {
+		self::end();
+		self::start();
+	}
 }
 
-if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+Session::start();
 Session::retrieve();
