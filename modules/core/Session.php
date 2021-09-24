@@ -58,30 +58,28 @@ class Session {
 	}
 
 	/**
-	 * Starts a new session
+	 * Start a new session
 	 */
 	public static function start() {
 		if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 	}
 
 	/**
-	 * Ends the session and tell client to remove session cookie
+	 * End the session and tell client to remove session cookie
 	 */
 	public static function end() {
 		if (session_status() === PHP_SESSION_ACTIVE) {
-			if ($session_id = session_name()) {
-				session_destroy();
-				setcookie($session_id, "", time() - 3600, "/");
-			}
+			session_destroy();
+			setcookie(session_name(), "", time() - 3600, "/");
 		}
 	}
 
 	/**
-	 * Ends a session and then starts a new one
+	 * Ends the session and then starts a new one\
+	 * This is good if you need to immediately update the session after call to this function
 	 */
 	public static function restart() {
-		self::end();
-		self::start();
+		session_regenerate_id(true);
 	}
 }
 
