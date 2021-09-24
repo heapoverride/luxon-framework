@@ -80,6 +80,7 @@ class Session {
 	 */
 	public static function restart() {
 		session_regenerate_id(true);
+		session_reset();
 	}
 }
 
