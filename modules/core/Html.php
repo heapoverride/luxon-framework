@@ -491,6 +491,26 @@ class Element {
 	}
 
 	/**
+	 * Pick all matching elements
+	 * @param function $callback (`$index`, `$element`)
+	 * @return Element[]
+	 */
+	function pick($callback) {
+		$array = [];
+		$i = 0;
+
+		foreach ($this->children as $child) {
+			if ($callback($i, $child) === true) {
+				$array[] = $child;
+			}
+
+			$i++;
+		}
+
+		return $array;
+	}
+
+	/**
 	 * Print the HTML source code
 	 * @param bool $return Set to `true` to return the generated code instead of writing it to the response body
 	 * @param bool $format Set to `true` to format the generated HTML source code and make it look real nice
