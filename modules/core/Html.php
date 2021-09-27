@@ -100,7 +100,7 @@ class Element {
 	}
 
 	/**
-	 * Set element's name (forms)
+	 * Set element's name (Forms)
 	 * @param string|int $name
 	 * @return Element
 	 */
@@ -313,7 +313,7 @@ class Element {
 	 * @param array $attributes
 	 * @return Element
 	 */
-	function setAttributes($attributes) {
+	function setAll($attributes) {
 		foreach ($attributes as $key => $value) {
 			$this->set($key, $value);
 		}
@@ -1140,7 +1140,7 @@ class Table extends Element {
 	 */
 	function addHeaders($headers, $props = []) {
 		$thead = (new TableHeader())
-		->setAttributes($props);
+		->setAll($props);
 
 		$row = new TableRow();
 		foreach ($headers as $el) {
@@ -1165,7 +1165,7 @@ class Table extends Element {
 		}
 
 		$row = (new TableRow())
-		->setAttributes($props);
+		->setAll($props);
 
 		foreach ($data as $el) {
 			$td = (new TableCell())->add($el);
@@ -1188,7 +1188,7 @@ class Table extends Element {
 		}
 
 		$row = new TableRow();
-		$row->setAttributes($props);
+		$row->setAll($props);
 
 		foreach ($data as $el) {
 			$row->add((new TableCell())->add($el));
