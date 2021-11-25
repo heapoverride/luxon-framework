@@ -47,6 +47,8 @@ class ORM {
 	}
 
 	private function _where($inverted, ...$condition) {
+		if (count($condition) === 0) return $this;
+
 		$array = [];
 
 		$array[] = "WHERE";
@@ -109,6 +111,8 @@ class ORM {
 	 * @return ORM
 	 */
 	public function limit(...$limit) {
+		if (count($limit) === 0) return $this;
+
 		for ($i=0; $i<count($limit); $i++) {
 			if (!is_numeric($limit[$i])) {
 				$limit[$i] = intval($limit[$i]);
@@ -384,6 +388,7 @@ class ORM {
 	 */
 	public function orderBy($columns, $order = "ASC") {
 		if (is_string($columns)) { $columns = [$columns]; }
+		if (count($columns) === 0) return $this;
 
 		for ($i=0; $i<count($columns); $i++) {
 			if (!$this->_is_valid_field_name($columns[$i])) throw new Exception('Column name is invalid');

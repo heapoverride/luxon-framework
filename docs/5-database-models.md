@@ -59,14 +59,25 @@ $todos = $todoModel->getMany();
 
 Get all todos that match a specific criteria
 ```php
-$todos = $todoModel->getMany("id", 1);
+$todos = $todoModel->getMany([
+    "where" => ["id", 1],
+    "order" => [
+        "order" => "DESC",
+        "columns" => ["time"]
+    ],
+    "limit" => [15]
+]);
 ```
 ```php
-$todos = $todoModel->getMany("todo", "like", "%GitHub%");
+$todos = $todoModel->getMany([
+    "where" => ["todo", "like", "%GitHub%"]
+]);
 ```
 ```php
-$todos = $todoModel->getMany(
-    ["todo", "like", "%GitHub%"], "AND",
-    ["time", ">", time() - 3600]
-);
+$todos = $todoModel->getMany([
+    "where" => [
+        ["todo", "like", "%GitHub%"], "AND",
+        ["time", ">", time() - 3600]
+    ]
+]);
 ```

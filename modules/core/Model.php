@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Minimal database model for Luxon framework\
+ * written by <github.com/UnrealSecurity>
+ */
+
 class ColumnValue {
     public $value = null;
     public $changed = false;
@@ -61,6 +66,32 @@ class Model {
     }
 
     /**
+     * Get default options
+     * @param array [$options]
+     */
+    private static function getOptions($options = null) {
+        $defaults = [
+            "where" => [],
+            "order" => [
+                "order" => "ASC",
+                "columns" => []
+            ],
+            "limit" => []
+        ];
+
+        /**
+         * Override default options
+         */
+        if ($options !== null) {
+            foreach ($options as $key => $value) {
+                $defaults[$key] = $value;
+            }
+        }
+
+        return $defaults;
+    }
+
+    /**
      * Convert value to specific type
      * @param mixed $value
      * @param string $type "int" | "float" | "double" | "string" | "json"
@@ -87,15 +118,16 @@ class Model {
 
     /**
      * Get model or `false` on error
-     * @param object[] $condition
+     * @param array [$options]
      * @return Model|false
      */
-    function getOne(...$condition) {
+    function getOne($options = null) {
+        $options = self::getOptions($options);
         $columns = array_keys($this->columns);
+        
         $result = ORM::instance()
             ->select($this->table, $columns)
-            ->where(...$condition)
-            ->limit(1)
+            ->where(...$options["where"])
             ->exec();
 
         if (!$result->isError && $result->count() === 1) {
@@ -128,28 +160,27 @@ class Model {
      * @param int $pk Primary key
      */
     function getByPK($pk) {
-        return $this->getOne($this->findPK(), $pk);
+        return $this->getOne([
+            "where" => [$this->findPK(), $pk]
+        ]);
     }
 
     /**
      * Get array of models or `false` on error
-     * @param object[] $condition
+     * @param array [$options]
      * @return Model[]|false
      */
-    function getMany(...$condition) {
+    function getMany($options = null) {
+        $options = self::getOptions($options);
         $columns = array_keys($this->columns);
         $models = [];
         
-        if (count($condition) > 0) {
-            $result = ORM::instance()
-                ->select($this->table, $columns)
-                ->where(...$condition)
-                ->exec();
-        } else {
-            $result = ORM::instance()
-                ->select($this->table, $columns)
-                ->exec();
-        }
+        $result = ORM::instance()
+            ->select($this->table, $columns)
+            ->where(...$options["where"])
+            ->orderBy($options["order"]["columns"], $options["order"]["order"])
+            ->limit(...$options["limit"])
+            ->exec();
 
         if (!$result->isError && $result->count() > 0) {
             while ($row = $result->fetch()) {

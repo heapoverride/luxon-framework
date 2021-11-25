@@ -72,7 +72,7 @@ Router::route("GET", "/^\/$/", ["Frontend", "Home"]);
 **./controllers/Frontend.php**
 ```php
 class Frontend {
-
+    
     /**
      * Render home page
      */
