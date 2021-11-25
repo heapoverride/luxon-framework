@@ -60,7 +60,11 @@ $todos = $todoModel->getMany();
 Get all todos that match a specific criteria
 ```php
 $todos = $todoModel->getMany([
-    "where" => ["id", 1],
+    "where" => ["id", 1]
+]);
+```
+```php
+$todos = $todoModel->getMany([
     "order" => [
         "order" => "DESC",
         "columns" => ["time"]
@@ -70,7 +74,7 @@ $todos = $todoModel->getMany([
 ```
 ```php
 $todos = $todoModel->getMany([
-    "where" => ["todo", "like", "%GitHub%"]
+    "where" => ["todo", "like", "%GitHub%"],
 ]);
 ```
 ```php
