@@ -226,6 +226,15 @@ class Model {
     }
 
     /**
+     * Get reference to column's value
+     * @param string $column Column name
+     * @return mixed
+     */
+    function &getRef($column) {
+        return $this->columns[$column][1]->value;
+    }
+
+    /**
      * Set column's value
      * @param string $column Column name
      * @param mixed $value Column value
