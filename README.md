@@ -12,3 +12,4 @@ expect your web application to break after updates.
 3. [Router and routes](docs/3-router-and-routes.md)
 4. [Template queries](docs/4-template-queries.md)
 5. [Database models](docs/5-database-models.md)
+6. [HTML renderer](docs/6-html-renderer.md)
