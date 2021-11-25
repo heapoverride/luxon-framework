@@ -9,4 +9,4 @@ expect your web application to break after updates.
 2. [Directories](docs/2-directories.md)
 3. [Router and routes](docs/3-router-and-routes.md)
 4. [Template queries](docs/4-template-queries.md)
-5. [Database models](docs/4-database-models.md)
+5. [Database models](docs/5-database-models.md)
