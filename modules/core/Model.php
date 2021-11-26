@@ -32,7 +32,7 @@ class ColumnDefinition {
     }
 }
 
-class Model {
+class Model implements ArrayAccess {
     protected $table = null;
     protected $columns = [];
     private static $models = [];
@@ -360,5 +360,26 @@ class Model {
             ->exec();
 
         return !$result->isError;
+    }
+
+    /**
+     * Array access to model's columns
+     */
+    public function offsetSet($offset, $value) {
+        if (is_string($offset)) {
+            $this->set($offset, $value);
+        }
+    }
+
+    public function offsetExists($offset) {
+        return is_string($offset) && isset($this->columns[$offset]);
+    }
+
+    public function offsetUnset($offset) {
+        return;
+    }
+
+    public function offsetGet($offset) {
+        return $this->offsetExists($offset) ? $this->get($offset) : null;
     }
 }

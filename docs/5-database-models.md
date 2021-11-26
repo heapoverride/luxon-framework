@@ -36,7 +36,10 @@ $todo = $todoModel->getByPK(1);
 
 Get todo's `todo` column's value
 ```php
-$strTodo = $todo->get("todo");
+$todoText = $todo->get("todo");
+```
+```php
+$todoText = $todo["todo"];
 ```
 
 Set todo's `time` to current unix timestamp
