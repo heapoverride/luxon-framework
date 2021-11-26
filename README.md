@@ -1,10 +1,7 @@
 # Luxon framework documentation
 Luxon is powerful and minimal framework and provides a solid foundation for your next website. 
 All Luxon's core modules are PHPdoc'ed so that your code editor can provide you with helpful information about each method. 
-I use Visual Studio Code with PHP Intelephense extension and it supports PHPdoc.\
-\
-**Warning:** Luxon is a work in progress project and if you decide to use it, you should\
-expect your web application to break after updates.
+I use Visual Studio Code with PHP Intelephense extension and it supports PHPdoc.
 
 ## Table of contents
 1. [Installation](docs/1-installation.md)
