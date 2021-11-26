@@ -21,7 +21,7 @@ class Utils {
 
     public static function pathCombine(...$paths) {
         for ($i=0; $i<count($paths); $i++) {
-            $paths[$i] = self::removeDotDots($paths[$i]);
+            if ($i !== 0) { $paths[$i] = self::removeDotDots($paths[$i]); }
             
             if ($paths[$i] === "/") {
                 $paths[$i] = "";
