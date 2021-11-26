@@ -112,7 +112,7 @@
                         }
                         $array[$i] = self::escape_array_2d($value, false);
                     }
-                } else if ($array[$i] === '#') {
+                } else if ($array[$i] === '@') {
                     $value = $data[$j++];
                     $d = self::get_array_d($value);
 
