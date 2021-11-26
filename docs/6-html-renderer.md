@@ -11,45 +11,22 @@ Define a pretty simple re-usable document template\
 ```php
 class Document extends Html\Html {
 
-    public $head, $title, $body, $header, $nav, $main, $footer;
+    public $head, $title, $body, $header, $main, $footer;
 
-    /**
-     * Create new Document with optional page name 
-     * that's displayed in the title after the site's name
-     * @param string $page
-     */
     function __construct($page = null)
     {
         parent::__construct();
 
         $this->add(
-            ($this->head = new Html\Head())->add(
-                ($this->title = new Html\Title($page !== null ? SITE_NAME." - ".$page : SITE_NAME)),
-                (new Html\Link("icon", "/assets/favicon.png", "image/png")),
-                (new Html\Style("/assets/styles/common.css")),
-                (new Html\Meta())
-                ->set("name", "viewport")
+            ($this->head = new Html\Head())
+            ->add(
+                ($this->title = new Html\Title($page !== null ? SITE_NAME." - ".$page : SITE_NAME))
             ),
-            ($this->body = new Html\Body())->add(
-                ($this->header = new Html\Header())->add(
-                    new Html\H1("Lorem ipsum dolor sit amet..."),
-                ),
-                ($this->nav = new Html\Nav())->add(
-                    (new Html\Div())
-                    ->set("class", "links")
-                    ->add(
-                        // navigation links
-                        (new Html\A("Home", "/"))
-                        ->set("data-page", "home"),
-
-                        (new Html\A("About us", "/about-us/"))
-                        ->set("data-page", "about")
-                    )
-                ),
+            ($this->body = new Html\Body())
+            ->add(
+                ($this->header = new Html\Header()),
                 ($this->main = new Html\Main()),
-                ($this->footer = new Html\Footer())->add(
-                    "Copyright © ".date('Y')
-                ),
+                ($this->footer = new Html\Footer())
             )
         );
     }
@@ -59,9 +36,9 @@ class Document extends Html\Html {
 
 #### Using the Document template
 
-**./config/application.php**
+**./config/site.php**
 ```php
-define("SITE_NAME", "My Website");
+define("SITE_NAME", "Demo Site");
 ```
 
 **./routes/Frontend.php**
