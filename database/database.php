@@ -61,19 +61,13 @@
                     $d = self::get_array_d($value);
 
                     if ($d === 0) {
-                        if (!self::is_valid_field_name($value)) {
-                            throw new Exception();
-                        }
-                        $array[$i] = self::escape($value, false);
+                        $array[$i] = self::escape_field($value);
                     } else if ($d === 1) {
                         $select = [];
-                        foreach ($value as &$v) {
-                            if (!self::is_valid_field_name($v)) {
-                                throw new Exception();
-                            }
-                            $select[] = self::escape($v, false);
+                        foreach ($value as $v) {
+                            $select[] = self::escape_field($v);
                         }
-                        $array[$i] = implode(',', $select);
+                        $array[$i] = implode(', ', $select);
                     }
                 } else if ($array[$i] === '?') {
                     $value = $data[$j++];
@@ -91,26 +85,9 @@
                     $d = self::get_array_d($value);
 
                     if ($d === 0) {
-                        if (!self::is_valid_field_name($value)) {
-                            throw new Exception();
-                        }
-                        $array[$i] = self::escape($value, false);
+                        $array[$i] = self::escape_field($value);
                     } else if ($d === 1) {
-                        foreach ($value as $v) {
-                            if (!self::is_valid_field_name($v)) {
-                                throw new Exception();
-                            }
-                        }
-                        $array[$i] = self::escape_array($value, false);
-                    } else if ($d === 2) {
-                        foreach ($value as $v1) {
-                            foreach ($v1 as $v2) {
-                                if (!self::is_valid_field_name($v2)) {
-                                    throw new Exception();
-                                }
-                            }
-                        }
-                        $array[$i] = self::escape_array_2d($value, false);
+                        $array[$i] = self::escape_field_array($value);
                     }
                 } else if ($array[$i] === '@') {
                     $value = $data[$j++];
