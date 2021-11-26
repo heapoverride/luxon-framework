@@ -127,7 +127,7 @@
                 return 'NULL';
             } else if (is_bool($value)) {
                 return $value ? 'TRUE' : 'FALSE';
-            } else if (!is_string($value) && is_numeric($value)) {
+            } else if (is_numeric($value)) {
                 return strval($value);
             }
             
