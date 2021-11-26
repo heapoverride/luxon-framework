@@ -379,6 +379,10 @@ class Model implements ArrayAccess {
         return;
     }
 
+    /**
+     * @param string $offset Column name
+     * @return mixed|null
+     */
     public function offsetGet($offset) {
         return $this->offsetExists($offset) ? $this->get($offset) : null;
     }
