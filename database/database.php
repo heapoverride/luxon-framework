@@ -87,7 +87,7 @@
                     if ($d === 0) {
                         $array[$i] = self::escape_field($value);
                     } else if ($d === 1) {
-                        $array[$i] = self::escape_field_array($value);
+                        $array[$i] = self::escape_field_array_brackets($value);
                     }
                 } else if ($array[$i] === '@') {
                     $value = $data[$j++];
@@ -96,7 +96,7 @@
                     if ($d === 0) {
                         $array[$i] = "`".$value."`";
                     } else if ($d === 1) {
-                        $array[$i] = "`".$value."`";
+                        $array[$i] = self::escape_field_array($value);
                     }
                 }
             }
@@ -170,7 +170,7 @@
             return implode('.', $array);
         }
 
-        public static function escape_array_brackets($array) {
+        public static function escape_field_array_brackets($array) {
             for ($i = 0; $i < count($array); $i++) {
                 $array[$i] = self::escape_field($array[$i]);
             }

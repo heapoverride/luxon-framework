@@ -15,15 +15,17 @@ $result = Database::query($query);
 ```
 
 ### Symbols and their behavior
-
 | Symbol | Data (mixed)               | Result (string)           |
 |-:      |-                           |-                          |
-| &      | `'a'`                      | `a`                       |
-|        | `['a', 'b']`               | `a, b`                    |
-| $      | `'a'`                      | `a`                       |
-|        | `['a', 'b']`               | `(a, b)`                  |
+| &      | `'a'`                      | `` `a` ``                 |
+|        | `['a', 'b']`               | `` `a`, `b` ``            |
+| @      | `a`                        | `` `a` ``                 |
+|        | `['a', 'b']`               | `` `a`.`b` ``             |
+| $      | `'a'`                      | `` `a` ``                 |
+|        | `['a', 'b']`               | `` (`a`, `b`) ``          |
 | ?      | `'a'`                      | `'a'`                     |
 |        | `['a', 'b']`               | `('a', 'b')`              |
 |        | `[['a', 'b'], ['a', 'b']]` | `('a', 'b'), ('a', 'b')`  |
-| @      | `a`                        | `` `a` ``                 |
-|        | `['a', 'b']`               | `` `a`.`b` ``             |
+
+### Template examples
+Coming soon...

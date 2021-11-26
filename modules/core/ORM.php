@@ -147,7 +147,7 @@ class ORM {
 
 		$array = [];
 		$array[] = 'INSERT INTO '.Database::escape_field($table);
-		if ($assoc) $array[] = Database::escape_array_brackets($keys);
+		if ($assoc) $array[] = Database::escape_field_array_brackets($keys);
 
 		if ($d == 1) {
 			if ($assoc) {

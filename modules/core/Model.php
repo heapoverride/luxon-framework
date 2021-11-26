@@ -334,7 +334,7 @@ class Model implements ArrayAccess {
                 $array[$column] = $value;
             }
         }
-        
+
         $result = ORM::instance()
             ->insert($this->table, $array)
             ->exec();
