@@ -26,7 +26,7 @@ $todoModel->saveModel("todo");
 
 Load saved model by it's name from anywhere
 ```php
-$todoModel = Model::loadModel("todo");
+$todoModel = Model::load("todo");
 ```
 
 Get one todo by it's primary key

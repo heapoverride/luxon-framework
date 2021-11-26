@@ -97,7 +97,7 @@ class Model implements ArrayAccess {
      * @param string $name Model name
      * @return Model|false
      */
-    static function loadModel($name) {
+    static function load($name) {
         if (array_key_exists($name, self::$models)) {
             return self::$models[$name];
         }
