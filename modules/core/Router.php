@@ -40,7 +40,7 @@ class Router {
 		$filepath = strtolower($filepath);
 
 		foreach (self::$disallowed as $ext) {
-			if (Utils::str_ends_with($filepath, $ext)) {
+			if (str_ends_with($filepath, $ext)) {
 				return false;
 			}
 		}
@@ -116,7 +116,7 @@ class Router {
 				return false;
 			}
 		} else if (is_dir($filepath)) {
-			$s = (Utils::str_ends_with($filepath, DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR);
+			$s = (str_ends_with($filepath, DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR);
 
 			foreach (scandir($filepath) as $entry) {
 				$fullpath = $filepath.$s.$entry;
