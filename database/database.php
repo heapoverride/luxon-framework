@@ -140,14 +140,14 @@
             for ($i = 0; $i < count($array); $i++) {
                 $array[$i] = self::escape($array[$i], $quotes);
             }
-            return "(".implode(',', $array).")";
+            return "(".implode(', ', $array).")";
         }
 
         public static function escape_array_2d($array, $quotes = true) {
             for ($i = 0; $i < count($array); $i++) {
                 $array[$i] = self::escape_array($array[$i], $quotes);
             }
-            return implode(',', $array);
+            return implode(', ', $array);
         }
 
         public static function is_valid_field_name($name) {
@@ -160,10 +160,18 @@
                 throw new Exception("Field name is invalid!");
             }
 
+            if (is_numeric($name)) {
+                return strval($name);
+            }
+
             return "`".$name."`";
         }
 
         public static function escape_field_array($array) {
+            if (!is_array($array)) {
+                return self::escape_field($array);
+            }
+
             for ($i = 0; $i < count($array); $i++) {
                 $array[$i] = self::escape_field($array[$i]);
             }
@@ -174,7 +182,7 @@
             for ($i = 0; $i < count($array); $i++) {
                 $array[$i] = self::escape_field($array[$i]);
             }
-            return "(".implode(',', $array).")";
+            return "(".implode(', ', $array).")";
         }
 
         public static function get_array_d($array) {

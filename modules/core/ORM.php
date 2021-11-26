@@ -28,7 +28,14 @@ class ORM {
 			$columns = ['*'];
 		} else {
 			for ($i=0; $i<count($columns); $i++) {
-				$columns[$i] = Database::escape_field($columns[$i]);
+				if (is_array($columns[$i])) {
+					$columns[$i] = implode(" AS ", [
+						Database::escape_field_array($columns[$i][0]),
+						Database::escape_field_array($columns[$i][1])
+					]);
+				} else {
+					$columns[$i] = Database::escape_field($columns[$i]);
+				}
 			}
 		}
 
