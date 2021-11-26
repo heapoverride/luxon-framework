@@ -112,6 +112,15 @@
                         }
                         $array[$i] = self::escape_array_2d($value, false);
                     }
+                } else if ($array[$i] === '#') {
+                    $value = $data[$j++];
+                    $d = self::get_array_d($value);
+
+                    if ($d === 0) {
+                        $array[$i] = "`".$value."`";
+                    } else if ($d === 1) {
+                        $array[$i] = "`".$value."`";
+                    }
                 }
             }
             return implode('', $array);
@@ -167,6 +176,28 @@
         public static function is_valid_field_name($name) {
             $name = strval($name);
             return preg_match('/^[A-Z0-9 \.\-_]*$/i', $name) === 1;
+        }
+
+        public static function escape_field($name) {
+            if (!self::is_valid_field_name($name)) {
+                throw new Exception("Field name is invalid!");
+            }
+
+            return "`".$name."`";
+        }
+
+        public static function escape_field_array($array) {
+            for ($i = 0; $i < count($array); $i++) {
+                $array[$i] = self::escape_field($array[$i]);
+            }
+            return implode('.', $array);
+        }
+
+        public static function escape_array_brackets($array) {
+            for ($i = 0; $i < count($array); $i++) {
+                $array[$i] = self::escape_field($array[$i]);
+            }
+            return "(".implode(',', $array).")";
         }
 
         public static function get_array_d($array) {

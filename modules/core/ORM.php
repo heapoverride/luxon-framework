@@ -24,18 +24,15 @@ class ORM {
 	 * @return ORM
 	 */
 	public function select($table, $columns = null) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-
 		if ($columns === null || $columns === '*') {
 			$columns = ['*'];
 		} else {
 			for ($i=0; $i<count($columns); $i++) {
-				if (!$this->_is_valid_field_name($columns[$i])) throw new Exception('Column name is invalid');
-				$columns[$i] = Database::escape($columns[$i], false);
+				$columns[$i] = Database::escape_field($columns[$i]);
 			}
 		}
 
-		$this->array[] = "SELECT ".implode(', ', $columns)." FROM ".Database::escape($table, false);
+		$this->array[] = "SELECT ".implode(', ', $columns)." FROM ".Database::escape_field($table);
 		return $this;
 	}
 
@@ -69,16 +66,15 @@ class ORM {
 					$L = $element[0];
 					$R = $element[1];
 
-					if (!$this->_is_valid_field_name($L)) throw new Exception('Column name is invalid');
-					$array[] = Database::escape($L, false).' = '.Database::escape($R, true);
+					$array[] = Database::escape_field($L).' = '.Database::escape($R);
 				} else if (count($element) === 3) {
 					$L = $element[0];
 					$R = $element[2];
-					$op = strtoupper(strval($element[1]));
 
-					if (!$this->_is_valid_field_name($L)) throw new Exception('Column name is invalid');
+					$op = strtoupper(strval($element[1]));
 					if (!in_array($op, $this->ops)) throw new Exception('Invalid compare operator');
-					$array[] = Database::escape($L, false).' '.$op.' '.Database::escape($R, true);
+
+					$array[] = Database::escape_field($L).' '.$op.' '.Database::escape($R);
 				}
 			}
 		}
@@ -134,11 +130,11 @@ class ORM {
 	 * @param mixed[] $data Associative array or simple array if values for all fields are provided
 	 */
 	public function insert($table, $data) {
-		$dim = Database::get_array_d($data);
+		$d = Database::get_array_d($data);
 
-		if ($dim == 1) {
+		if ($d == 1) {
 			$keys = array_keys($data);
-		} else if ($dim == 2) {
+		} else if ($d == 2) {
 			$keys = array_keys($data[0]);
 		}
 
@@ -150,10 +146,10 @@ class ORM {
 		if ($n === count($keys)) $assoc = false;
 
 		$array = [];
-		$array[] = 'INSERT INTO '.Database::escape($table, false);
-		if ($assoc) $array[] = Database::escape_array($keys, false);
+		$array[] = 'INSERT INTO '.Database::escape_field($table);
+		if ($assoc) $array[] = Database::escape_array_brackets($keys);
 
-		if ($dim == 1) {
+		if ($d == 1) {
 			if ($assoc) {
 				$values = [];
 
@@ -166,7 +162,7 @@ class ORM {
 			} else {
 				$array[] = 'VALUES '.Database::escape_array($data, true);
 			}
-		} else if ($dim == 2) {
+		} else if ($d == 2) {
 			if ($assoc) {
 				$values = [];
 				$i = 0;
@@ -195,14 +191,12 @@ class ORM {
 	 * @param string[] $columns Associative array (column name => data type)
 	 */
 	public function create($table, $columns) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-
 		$array = [];
-		$array[] = 'CREATE TABLE '.Database::escape($table, false);
+		$array[] = 'CREATE TABLE '.Database::escape_field($table);
 
 		$fields = [];
 		foreach ($columns as $name => $value) {
-			$fields[] = "`".strval(Database::escape($name, false))."` ".strval($value);
+			$fields[] = Database::escape_field($name)." ".strval($value);
 		}
 		$array[] = "(".implode(', ', $fields).")";
 
@@ -215,9 +209,7 @@ class ORM {
 	 * @param string $table Table name
 	 */
 	public function deleteFrom($table) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-
-		$this->array[] = 'DELETE FROM '.Database::escape($table, false);
+		$this->array[] = 'DELETE FROM '.Database::escape_field($table);
 		return $this;
 	}
 
@@ -227,15 +219,12 @@ class ORM {
 	 * @param mixed[] $data Associative array (column name => new value)
 	 */
 	public function update($table, $data) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-
 		$array = [];
-		$array[] = 'UPDATE '.Database::escape($table, false).' SET';
+		$array[] = 'UPDATE '.Database::escape_field($table).' SET';
 
 		$sets = [];
 		foreach ($data as $column => $value) {
-			if (!$this->_is_valid_field_name($column)) throw new Exception('Column name is invalid');
-			$sets[] = Database::escape($column, false).' = '.Database::escape($value, true);
+			$sets[] = Database::escape_field($column).' = '.Database::escape($value, true);
 		}
 		$array[] = implode(', ', $sets);
 
@@ -248,9 +237,7 @@ class ORM {
 	 * @param string $table Table name
 	 */
 	public function alter($table) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-
-		$this->array[] = 'ALTER TABLE '.Database::escape($table, false);
+		$this->array[] = 'ALTER TABLE '.Database::escape_field($table);
 		return $this;
 	}
 
@@ -260,8 +247,7 @@ class ORM {
 	 * @param string $datatype New column's datatype
 	 */
 	public function add($column, $datatype) {
-		if (!$this->_is_valid_field_name($column)) throw new Exception('Column name is invalid');
-		$this->array[] = 'ADD '.Database::escape($column, false).' '.Database::escape($datatype, false);
+		$this->array[] = 'ADD '.Database::escape_field($column).' '.Database::escape($datatype, false);
 		return $this;
 	}
 
@@ -270,8 +256,7 @@ class ORM {
 	 * @param string $column Column to drop
 	 */
 	public function dropColumn($column) {
-		if (!$this->_is_valid_field_name($column)) throw new Exception('Column name is invalid');
-		$this->array[] = 'DROP COLUMN '.Database::escape($column, false);
+		$this->array[] = 'DROP COLUMN '.Database::escape_field($column);
 		return $this;
 	}
 
@@ -280,8 +265,7 @@ class ORM {
 	 * @param string $column Column to drop
 	 */
 	public function dropIndex($name) {
-		if (!$this->_is_valid_field_name($name)) throw new Exception('Index name is invalid');
-		$this->array[] = 'DROP INDEX '.Database::escape($name, false);
+		$this->array[] = 'DROP INDEX '.Database::escape_field($name);
 		return $this;
 	}
 
@@ -290,8 +274,7 @@ class ORM {
 	 * @param string $table Table to drop
 	 */
 	public function dropTable($table) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-		$this->array[] = 'DROP TABLE '.Database::escape($table, false);
+		$this->array[] = 'DROP TABLE '.Database::escape_field($table);
 		return $this;
 	}
 
@@ -300,25 +283,20 @@ class ORM {
 	 * @param string $table Table to truncate
 	 */
 	public function truncate($table) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-		$this->array[] = 'TRUNCATE TABLE '.Database::escape($table, false);
+		$this->array[] = 'TRUNCATE TABLE '.Database::escape_field($table);
 		return $this;
 	}
 
 	/**
 	 * Return records that have matching values in both tables
 	 * @param string $table Table name
-	 * @param string $column_a Format: TableName.ColumnName
-	 * @param string $column_b Format: TableName.ColumnName
+	 * @param string[] $left Format: ["table", "column"]
+	 * @param string[] $right Format: ["table", "column"]
 	 */
-	public function innerJoin($table, $column_a, $column_b) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-		if (!$this->_is_valid_field_name($column_a)) throw new Exception('Column name is invalid');
-		if (!$this->_is_valid_field_name($column_b)) throw new Exception('Column name is invalid');
-
+	public function innerJoin($table, $left, $right) {
 		$array = [];
-		$array[] = 'INNER JOIN '.Database::escape($table, false).' ON';
-		$array[] = Database::escape($column_a, false).' = '.Database::escape($column_b, false);
+		$array[] = 'INNER JOIN '.Database::escape_field($table, false).' ON';
+		$array[] = Database::escape_field_array($left).' = '.Database::escape_field_array($right);
 
 		$this->array[] = implode(' ', $array);
 		return $this;
@@ -327,17 +305,13 @@ class ORM {
 	/**
 	 * Return all records from the left table, and the matched records from the right table
 	 * @param string $table Table name
-	 * @param string $column_a Format: TableName.ColumnName
-	 * @param string $column_b Format: TableName.ColumnName
+	 * @param string[] $left Format: ["table", "column"]
+	 * @param string[] $right Format: ["table", "column"]
 	 */
-	public function leftJoin($table, $column_a, $column_b) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-		if (!$this->_is_valid_field_name($column_a)) throw new Exception('Column name is invalid');
-		if (!$this->_is_valid_field_name($column_b)) throw new Exception('Column name is invalid');
-
+	public function leftJoin($table, $left, $right) {
 		$array = [];
-		$array[] = 'LEFT OUTER JOIN '.Database::escape($table, false).' ON';
-		$array[] = Database::escape($column_a, false).' = '.Database::escape($column_b, false);
+		$array[] = 'LEFT OUTER JOIN '.Database::escape_field($table).' ON';
+		$array[] = Database::escape_field_array($left, false).' = '.Database::escape_field_array($right);
 
 		$this->array[] = implode(' ', $array);
 		return $this;
@@ -346,17 +320,13 @@ class ORM {
 	/**
 	 * Return all records from the right table, and the matched records from the left table
 	 * @param string $table Table name
-	 * @param string $column_a Format: TableName.ColumnName
-	 * @param string $column_b Format: TableName.ColumnName
+	 * @param string[] $left Format: ["table", "column"]
+	 * @param string[] $right Format: ["table", "column"]
 	 */
-	public function rightJoin($table, $column_a, $column_b) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-		if (!$this->_is_valid_field_name($column_a)) throw new Exception('Column name is invalid');
-		if (!$this->_is_valid_field_name($column_b)) throw new Exception('Column name is invalid');
-
+	public function rightJoin($table, $left, $right) {
 		$array = [];
-		$array[] = 'RIGHT OUTER JOIN '.Database::escape($table, false).' ON';
-		$array[] = Database::escape($column_a, false).' = '.Database::escape($column_b, false);
+		$array[] = 'RIGHT OUTER JOIN '.Database::escape_field($table).' ON';
+		$array[] = Database::escape_field_array($left).' = '.Database::escape_field_array($right);
 
 		$this->array[] = implode(' ', $array);
 		return $this;
@@ -365,17 +335,13 @@ class ORM {
 	/**
 	 * Return all records when there is a match in either left or right table
 	 * @param string $table Table name
-	 * @param string $column_a Format: TableName.ColumnName
-	 * @param string $column_b Format: TableName.ColumnName
+	 * @param string[] $left Format: ["table", "column"]
+	 * @param string[] $right Format: ["table", "column"]
 	 */
-	public function fullJoin($table, $column_a, $column_b) {
-		if (!$this->_is_valid_field_name($table)) throw new Exception('Table name is invalid');
-		if (!$this->_is_valid_field_name($column_a)) throw new Exception('Column name is invalid');
-		if (!$this->_is_valid_field_name($column_b)) throw new Exception('Column name is invalid');
-
+	public function fullJoin($table, $left, $right) {
 		$array = [];
-		$array[] = 'FULL OUTER JOIN '.Database::escape($table, false).' ON';
-		$array[] = Database::escape($column_a, false).' = '.Database::escape($column_b, false);
+		$array[] = 'FULL OUTER JOIN '.Database::escape_field($table).' ON';
+		$array[] = Database::escape_field_array($left).' = '.Database::escape_field_array($right);
 
 		$this->array[] = implode(' ', $array);
 		return $this;
@@ -391,8 +357,7 @@ class ORM {
 		if (count($columns) === 0) return $this;
 
 		for ($i=0; $i<count($columns); $i++) {
-			if (!$this->_is_valid_field_name($columns[$i])) throw new Exception('Column name is invalid');
-			$columns[$i] = Database::escape($columns[$i], false);
+			$columns[$i] = Database::escape_field($columns[$i]);
 		}
 
 		$order = strtoupper($order);
