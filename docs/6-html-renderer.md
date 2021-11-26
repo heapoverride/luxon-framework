@@ -1,5 +1,5 @@
 # HTML renderer
-This is a feature built into Luxon that you can use but you don't have to!\ 
+This is a feature built into Luxon that you can use but you don't have to!\
 Think of it like how you'd create and manipulate DOM elements using JavaScript in browser.
 
 ### Code examples
@@ -72,7 +72,7 @@ Router::route("GET", "/^\/$/", ["Frontend", "Home"]);
 **./controllers/Frontend.php**
 ```php
 class Frontend {
-    
+
     /**
      * Render home page
      */
