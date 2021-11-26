@@ -19,6 +19,16 @@ $todoModel = Model::define("todos", [
 ]);
 ```
 
+Save model by name so that it can be loaded at any time from anywhere
+```php
+$todoModel->saveModel("todo");
+```
+
+Load saved model by it's name from anywhere
+```php
+$todoModel = Model::loadModel("todo");
+```
+
 Get one todo by it's primary key
 ```php
 $todo = $todoModel->getByPK(1);

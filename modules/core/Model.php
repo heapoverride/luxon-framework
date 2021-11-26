@@ -35,6 +35,7 @@ class ColumnDefinition {
 class Model {
     protected $table = null;
     protected $columns = [];
+    private static $models = [];
 
     /**
      * Define new model
@@ -89,6 +90,27 @@ class Model {
         }
 
         return $defaults;
+    }
+
+    /**
+     * Load model by it's name or `false` on error
+     * @param string $name Model name
+     * @return Model|false
+     */
+    static function loadModel($name) {
+        if (array_key_exists($name, self::$models)) {
+            return self::$models[$name];
+        }
+
+        return false;
+    }
+
+    /**
+     * Save model with name
+     * @param string $name Model name
+     */
+    function saveModel($name) {
+        self::$models[$name] = $this;
     }
 
     /**
