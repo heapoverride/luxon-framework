@@ -1,23 +1,58 @@
 <?php
 
 class FileUpload {
+    /**
+     * @var string Filename
+     */
     public $name;
+
+    /**
+     * @var int Length of file in bytes
+     */
     public $length;
+
+    /**
+     * @var string Full path to file 
+     * - Initially set to temporary file's path
+     * - Use $file->move(...) to move the file to permanent location)
+     */
     public $path;
+
+    /**
+     * @var string File's mime type (like "image/jpeg")
+     */
     public $mimetype;
+
+    /**
+     * @var string File's extension (like ".jpg") or empty string
+     */
     public $extension;
+
+    /**
+     * @var int Error code
+     */
     public $error;
-    protected $temp;
+
+    /**
+     * @var bool Is temporary file
+     */
+    private $temp = true;
 
     /**
      * Move file and return `true` on success and `false` on error
      * @return bool
      */
     function move($destination) {
-        if (str_ends_with($destination, "/")) { $destination = Utils::pathCombine($destination, $this->name); }
+        if (str_ends_with($destination, DIRECTORY_SEPARATOR)) { 
+            $destination = Utils::pathCombine($destination, $this->name); 
+        }
 
-        if ($this->temp !== null) {
-            if (move_uploaded_file($this->temp, $destination)) {
+        if ($this->temp === true) {
+            $dir = dirname($destination);
+            if (!file_exists($dir)) { mkdir($dir, 0777, true); }
+
+            if (move_uploaded_file($this->path, $destination)) {
+                $this->temp = false;
                 $this->path = $destination;
                 return true;
             }
@@ -93,7 +128,7 @@ class FileUpload {
                     $file->length = $length[$i];
                     $file->mimetype = $type[$i];
                     $file->extension = self::getExtension($file->name);
-                    $file->temp = $temp[$i];
+                    $file->path = $temp[$i];
                     $file->error = $error[$i];
 
                     $tempFiles[] = $file;
@@ -104,7 +139,7 @@ class FileUpload {
                 $file->length = $length;
                 $file->mimetype = $type;
                 $file->extension = self::getExtension($file->name);
-                $file->temp = $temp;
+                $file->path = $temp;
                 $file->error = $error;
 
                 $tempFiles[] = $file;
@@ -121,6 +156,13 @@ class FileUpload {
         }
 
         foreach ($tempFiles as $file) {
+            /**
+             * Make sure there are no errors
+             */
+            if ($file->error !== 0) {
+                return false;
+            }
+
             /**
              * Make sure that file's mime type is one of the accepted mime types
              */
