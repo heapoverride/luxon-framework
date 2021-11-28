@@ -82,6 +82,30 @@ class JSONAPI {
     }
 
     /**
+     * @param object $object
+     */
+    private static function _recursive_get_object_vars(&$object, &$array) {
+        if (is_object($object)) {
+            foreach (get_object_vars($object) as $key => $value) {
+                self::_recursive_get_object_vars($value, $array[$key]);
+            }
+        } else {
+            $array = $object;
+        }
+    }
+
+    /**
+     * @param object $object
+     * @return array
+     */
+    private static function recursive_get_object_vars($object) {
+        $array = [];
+        self::_recursive_get_object_vars($object, $array);
+
+        return $array;
+    }
+
+    /**
      * Determine if all values in input array have same value
      * @param array $array
      * @param string $type 
@@ -199,7 +223,7 @@ class JSONAPI {
              * Check number range?
              */
             if ($options["range"] !== null) {
-                if (count($options["length"]) === 2 && ($prop < $options["length"][0] || $prop > $options["length"][1])) {
+                if (count($options["range"]) === 2 && ($prop < $options["range"][0] || $prop > $options["range"][1])) {
                     $error = true; return;
                 }
             }
@@ -220,7 +244,7 @@ class JSONAPI {
         if ($template === null) return true;
 
         $error = false;
-        $data = get_object_vars($request);
+        $data = self::recursive_get_object_vars($request);
         self::_validate($data, $template, $error);
 
         return !$error;
