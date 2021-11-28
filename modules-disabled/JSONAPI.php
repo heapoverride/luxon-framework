@@ -13,13 +13,13 @@ class JSONAPI {
 
     /**
      * Send response and stop script execution
-     * @param int $status Response status code (see: https://restfulapi.net/http-status-codes/)
+     * @param int $status_code Response status code (see: https://restfulapi.net/http-status-codes/)
      * @param bool $is_error Is error response
      * @param mixed $error_desc Error description
      * @param bool $is_empty Is empty response
      */
-    private function _send($status = 200, $is_error = false, $error_desc = null, $is_empty = false) {
-        http_response_code($status);
+    private function _send($status_code = 200, $is_error = false, $error_desc = null, $is_empty = false) {
+        http_response_code($status_code);
         if ($is_empty) exit;
 
         $res = [
@@ -42,19 +42,20 @@ class JSONAPI {
     /**
      * Send succesful response and stop script execution
      * - 200 - OK
-     * @param int $status Optional status code
+     * @param int $status_code Optional status code
      */
-    public function sendResponse($status = 200) {
-        $this->_send($status);
+    public function sendResponse($status_code = 200) {
+        $this->_send($status_code);
     }
 
     /**
      * Send error response and stop script execution
      * - 500 - INTERNAL SERVER ERROR
      * @param mixed|null $error_desc Error description
+     * @param int $status_code Optional status code
      */
-    public function sendError($error_desc = null) {
-        $this->_send(500, true, $error_desc);
+    public function sendError($error_desc = null, $status_code = 500) {
+        $this->_send($status_code, true, $error_desc);
     }
 
     /**
