@@ -85,7 +85,8 @@ class JSONAPI {
             "type" => "object", // object, array:[type], string, number, bool
             "length" => null,   // [min, max]
             "range" => null,    // [min, max]
-            "pattern" => null   // regex pattern
+            "pattern" => null,  // regex pattern
+            "filter" => null    // FILTER_VALIDATE_EMAIL, ...
         ];
 
         /**
@@ -146,24 +147,45 @@ class JSONAPI {
     }
 
     /**
-     * Determine if all values in input array have same value
+     * Determine if all values in input array have the same value
      * @param array $array
-     * @param string $type 
+     * @param string $_type 
      */
-    private static function arrayType(&$array, $type) {
-        if ($type === "object") {
+    private static function arrayType(&$array, $_type) {
+        $type = explode(":", $_type, 2);
+
+        if ($type[0] === "object") {
             foreach ($array as &$a) { if (!self::isAssoc($a)) return false; }
         }
-        else if ($type === "array") {
+        else if ($type[0] === "array") {
             foreach ($array as &$a) { if (!is_array($a)) return false; }
         }
-        else if ($type === "string") {
-            foreach ($array as &$a) { if (!is_string($a)) return false; }
+        else if ($type[0] === "string") {
+            if (count($type) === 2) {
+                if ($type[1] === "email") { 
+                    foreach ($array as &$a) { if (!filter_var($a, FILTER_VALIDATE_EMAIL)) return false; } 
+                }
+                else if ($type[1] === "domain") {
+                    foreach ($array as &$a) { if (!filter_var($a, FILTER_VALIDATE_DOMAIN)) return false; } 
+                }
+                else if ($type[1] === "ip") {
+                    foreach ($array as &$a) { if (!filter_var($a, FILTER_VALIDATE_IP)) return false; } 
+                }
+                else if ($type[1] === "mac") {
+                    foreach ($array as &$a) { if (!filter_var($a, FILTER_VALIDATE_MAC)) return false; } 
+                }
+                else if ($type[1] === "url") {
+                    foreach ($array as &$a) { if (!filter_var($a, FILTER_VALIDATE_URL)) return false; } 
+                }
+            }
+            else {
+                foreach ($array as &$a) { if (!is_string($a)) return false; }
+            }
         }
-        else if ($type === "number") {
+        else if ($type[0] === "number") {
             foreach ($array as &$a) { if (!self::isNumber($a)) return false; }
         }
-        else if ($type === "bool") {
+        else if ($type[0] === "bool") {
             foreach ($array as &$a) { if (!is_bool($a)) return false; }
         }
 
@@ -177,12 +199,13 @@ class JSONAPI {
      */
     private static function _validate(&$prop, &$template, &$error) {
         $options = self::getOptions($template);
+        $type = explode(":", $options["type"], 2);
 
         if (self::isAssoc($prop)) {
             /**
              * Associative array with keys
              */
-            if ($options["type"] !== "object") { $error = true; return; }
+            if ($type[0] !== "object") { $error = true; return; }
 
             foreach ($template as $key => $value) {
                 if (str_starts_with($key, ":")) continue;
@@ -201,15 +224,7 @@ class JSONAPI {
             /**
              * Regular array
              */
-            $type = explode(":", $options["type"], 2);
             if ($type[0] !== "array") { $error = true; return; }
-
-            /**
-             * Check array element types?
-             */
-            if (count($type) === 2 && !self::arrayType($prop, $type[1])) {
-                $error = true; return;
-            }
 
             /**
              * Check array length?
@@ -225,12 +240,18 @@ class JSONAPI {
                 };
             }
 
+            /**
+             * Check array element types?
+             */
+            if (count($type) === 2 && !self::arrayType($prop, $type[1])) {
+                $error = true; return;
+            }
         }
         else if (is_string($prop)) {
             /**
              * Property value is a string
              */
-            if ($options["type"] !== "string") { $error = true; return; }
+            if ($type[0] !== "string") { $error = true; return; }
 
             /**
              * Check string length?
@@ -247,6 +268,27 @@ class JSONAPI {
             }
 
             /**
+             * Check special string types?
+             */
+            if (count($type) === 2) {
+                if ($type[1] === "email" && !filter_var($prop, FILTER_VALIDATE_EMAIL)) {
+                    $error = true; return;
+                }
+                else if ($type[1] === "domain" && !filter_var($prop, FILTER_VALIDATE_DOMAIN)) {
+                    $error = true; return;
+                }
+                else if ($type[1] === "ip" && !filter_var($prop, FILTER_VALIDATE_IP)) {
+                    $error = true; return;
+                }
+                else if ($type[1] === "mac" && !filter_var($prop, FILTER_VALIDATE_MAC)) {
+                    $error = true; return;
+                }
+                else if ($type[1] === "url" && !filter_var($prop, FILTER_VALIDATE_URL)) {
+                    $error = true; return;
+                }
+            }
+
+            /**
              * Check if string matches a given pattern?
              */
             if ($options["pattern"] !== null && preg_match($options["pattern"], $prop) !== 1) {
@@ -257,7 +299,7 @@ class JSONAPI {
             /**
              * Property value is a number
              */
-            if ($options["type"] !== "number") { $error = true; return; }
+            if ($type[0] !== "number") { $error = true; return; }
 
             /**
              * Check number range?
@@ -272,7 +314,7 @@ class JSONAPI {
             /**
              * Property value is a boolean
              */
-            if ($options["type"] !== "bool") { $error = true; return; }
+            if ($type[0] !== "bool") { $error = true; return; }
         }
     }
 
