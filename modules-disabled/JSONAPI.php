@@ -12,27 +12,66 @@ class JSONAPI {
     public $response = [];
 
     /**
-     * Send successful response and stop script execution
+     * Send response and stop script execution
+     * @param int $status Response status code (see: https://restfulapi.net/http-status-codes/)
+     * @param bool $is_error Is error response
+     * @param mixed $error_desc Error description
+     * @param bool $is_empty Is empty response
      */
-    public function send() {
-        echo json_encode([
+    private function _send($status = 200, $is_error = false, $error_desc = null, $is_empty = false) {
+        http_response_code($status);
+        if ($is_empty) exit;
+
+        $res = [
             "success" => true,
             "response" => $this->response
-        ]);
+        ];
+
+        if ($is_error) {
+            $res["success"] = false;
+
+            if ($error_desc !== null) {
+                $res["error"] = $error_desc;
+            }
+        }
+
+        echo json_encode($res);
         exit;
     }
 
     /**
-     * Send error response and stop script execution
-     * @param mixed|null $error Error description
+     * Send succesful response and stop script execution
+     * - 200 - OK
+     * @param int $status Optional status code
      */
-    public function error($error = null) {
-        $res = ["success" => false];
-        if ($error !== null) { 
-            $res["error"] = $error; 
-        }
-        echo json_encode($res);
-        exit;
+    public function sendResponse($status = 200) {
+        $this->_send($status);
+    }
+
+    /**
+     * Send error response and stop script execution
+     * - 500 - INTERNAL SERVER ERROR
+     * @param mixed|null $error_desc Error description
+     */
+    public function sendError($error_desc = null) {
+        $this->_send(500, true, $error_desc);
+    }
+
+    /**
+     * Send empty response and stop script execution
+     * - 204 - NO CONTENT
+     */
+    public function sendEmpty() {
+        $this->_send(204, false, null, true);
+    }
+
+    /**
+     * Send unauthorized response and stop script execution
+     * - 401 - UNAUTHORIZED
+     * @param mixed|null $error_desc Error description
+     */
+    public function sendUnauthorized($error_desc = null) {
+        $this->_send(401, true, $error_desc);
     }
 
     /**
@@ -253,9 +292,10 @@ class JSONAPI {
     /**
      * Accept and validate JSON API request
      * @param array|null $template JSON payload template or null if no request payload is expected
+     * @param callable|null $authenticate Authentication callback that should return `true` if request is authenticated
      * @return JSONAPI
      */
-    static function accept($template = null) {
+    static function accept($template = null, $authenticate = null) {
         /**
          * Set response content type
          */
@@ -278,9 +318,13 @@ class JSONAPI {
         if ($data !== null) {
             $api->request = $data;
 
-            $error = null;
             if (!self::validate($api->request, $template)) {
-                $api->error($error);
+                $api->_send(400, true, "Bad Request");
+            }
+
+            if ($authenticate !== null) {
+                $authenticated = call_user_func_array($authenticate, [ $api ]);
+                if (!$authenticated) { $api->sendUnauthorized("Unauthorized"); }
             }
         }
 
