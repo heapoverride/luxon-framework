@@ -7,9 +7,9 @@ class JSONAPI {
     public $request = null;
 
     /**
-     * @var object Response payload
+     * @var object|null Response payload
      */
-    public $response = [];
+    public $response = null;
 
     /**
      * Send response and stop script execution
@@ -22,10 +22,9 @@ class JSONAPI {
         http_response_code($status_code);
         if ($is_empty) exit;
 
-        $res = [
-            "success" => true,
-            "response" => $this->response
-        ];
+        $res = [ "success" => true ];
+
+        if ($this->response !== null) { $res["response"] = $this->response; }
 
         if ($is_error) {
             $res["success"] = false;
