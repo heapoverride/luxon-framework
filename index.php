@@ -1,6 +1,7 @@
 <?php
 
 error_reporting(0);
+define("LUXON", true);
 
 try {
     function _sort($path, &$entries) {
