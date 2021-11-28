@@ -274,16 +274,16 @@ class JSONAPI {
             $data = json_decode(file_get_contents("php://input")); 
         }
 
-        $json = new JSONAPI();
-        if ($data !== null) { 
-            $json->request = $data; 
+        $api = new JSONAPI();
+        if ($data !== null) {
+            $api->request = $data;
 
             $error = null;
-            if (!self::validate($json->request, $template)) {
-                $json->error($error);
+            if (!self::validate($api->request, $template)) {
+                $api->error($error);
             }
         }
 
-        return $json;
+        return $api;
     }
 }
