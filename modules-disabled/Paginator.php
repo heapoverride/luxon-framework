@@ -33,6 +33,7 @@ class Paginator {
 
     /**
      * Gets total number of pages
+     * @return integer
      */
     public function getNumPages() {
         return ceil($this->totalItems / $this->pageSize);
@@ -40,17 +41,18 @@ class Paginator {
 
     /**
      * Gets the set page size
+     * @return integer
      */
     public function getPageSize() {
         return $this->pageSize;
     }
 
     /**
-     * Run Paginator and return array of PaginatorPage objects
-     * @return PaginatorPage[]
+     * Run Paginator and return array of PaginatorPage objects or `false` on error
+     * @return PaginatorPage[]|false
      */
     public function run() {
-        if ($this->totalItems <= 0 || $this->pageNum < 1 || $this->pageSize <= 0) return null;
+        if ($this->totalItems <= 0 || $this->pageNum < 1 || $this->pageSize <= 0) return false;
 
         $numPages = $this->getNumPages();
         $pageNum = $this->pageNum - 1;
