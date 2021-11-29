@@ -81,11 +81,12 @@ class JSONAPI {
      */
     private static function getOptions($options = null) {
         $defaults = [
-            "type" => "object", // object, array:[type], string, number, bool
-            "length" => null,   // [min, max]
-            "range" => null,    // [min, max]
-            "pattern" => null,  // regex pattern
-            "filter" => null    // FILTER_VALIDATE_EMAIL, ...
+            "type" => "object",  // object, array:[type], string, number, bool
+            "optional" => false,
+            "length" => null,    // [min, max]
+            "range" => null,     // [min, max]
+            "pattern" => null,   // regex pattern
+            "filter" => null     // FILTER_VALIDATE_EMAIL, ...
         ];
 
         /**
@@ -200,6 +201,14 @@ class JSONAPI {
         $options = self::getOptions($template);
         $type = explode(":", $options["type"], 2);
 
+        /**
+         * Error if property is not set and isn't marked optional
+         */
+        if (!isset($prop)) {
+            if ($options["optional"] === false) $error = true;
+            return;
+        }
+
         if (self::isAssoc($prop)) {
             /**
              * Associative array with keys
@@ -207,12 +216,12 @@ class JSONAPI {
             if ($type[0] !== "object") { $error = true; return; }
 
             foreach ($template as $key => $value) {
+                if ($error) continue;
                 if (str_starts_with($key, ":")) continue;
                 
                 /**
                  * Recursively validate properties
                  */
-                if (!isset($prop[$key]) || !isset($template[$key])) { $error = true; return; }
                 self::_validate($prop[$key], $value, $error);
             }
 
