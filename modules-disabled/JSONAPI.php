@@ -130,7 +130,13 @@ class JSONAPI {
             foreach (get_object_vars($object) as $key => $value) {
                 self::_recursive_get_object_vars($value, $array[$key]);
             }
-        } else {
+        }
+        else if (is_array($object)) {
+            foreach ($object as $key => $value) {
+                self::_recursive_get_object_vars($value, $array[$key]);
+            }
+        }
+        else {
             $array = $object;
         }
     }
@@ -334,8 +340,11 @@ class JSONAPI {
         if ($template === null) return true;
 
         $error = false;
-        $data = self::recursive_get_object_vars($request);
-        self::_validate($data, $template, $error);
+        $prop = self::recursive_get_object_vars($request);
+
+        var_dump($prop); exit;
+
+        self::_validate($prop, $template, $error);
 
         return !$error;
     }
