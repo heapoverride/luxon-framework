@@ -342,8 +342,6 @@ class JSONAPI {
         $error = false;
         $prop = self::recursive_get_object_vars($request);
 
-        var_dump($prop); exit;
-
         self::_validate($prop, $template, $error);
 
         return !$error;
