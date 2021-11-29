@@ -144,40 +144,40 @@ class Request {
 class Response {
     /**
      * Response URL
-     * @return string
+     * @var string
      */
     public $url = null;
     /**
      * Response HTTP status code
-     * @return integer
+     * @var integer
      */
-    public $code = 0;
+    public $status = 0;
     /**
      * Response content type
-     * @return string
+     * @var string
      */
     public $type = null;
     /**
      * Response content length
-     * @return integer
+     * @var integer
      */
     public $length = 0;
     /**
      * Response headers in an associative array
-     * @return array[]
+     * @var array
      */
     public $headers = [];
     /**
      * Response body
-     * @return string
+     * @var string
      */
     public $body = null;
     
     function __construct($ch) {
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array(&$this, 'header_function'));
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, [&$this, "header_function"]);
         $this->body = curl_exec($ch);
         $this->url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $this->code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $this->status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $this->type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         $this->length = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         curl_close($ch);
