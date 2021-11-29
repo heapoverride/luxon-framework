@@ -124,6 +124,7 @@ class JSONAPI {
 
     /**
      * @param object $object
+     * @param array $array
      */
     private static function _recursive_get_object_vars(&$object, &$array) {
         if (is_object($object)) {
@@ -148,7 +149,6 @@ class JSONAPI {
     private static function recursive_get_object_vars($object) {
         $array = [];
         self::_recursive_get_object_vars($object, $array);
-
         return $array;
     }
 
