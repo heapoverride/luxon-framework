@@ -1,31 +1,72 @@
 <?php
 
 class Router {
+	/**
+	 * @var Route[]
+	 */
 	private static $routes = [];
+
+	/**
+	 * @var string Regular expression to match index files
+	 */
 	private static $index = "/^index\.(php|html)$/i";
+
+	/**
+	 * @var string[] Disallowed extensions that should not be served by `Router::serve` method
+	 */
 	private static $disallowed = ['.php', '.sql'];
+
+	/**
+	 * Set by `Router::continue` method to tell router to keep trying even after a match has been found
+	 */
 	private static $continue = false;
+
+	/**
+	 * @var string|null Set hostname
+	 */
 	private static $host = null;
+
+	/**
+	 * @var string|null Set base
+	 */
+	private static $base = null;
 	
 	/**
 	 * Add new route
-	 * @param string $method HTTP method or * to match any
-	 * @param string $path Regular expression to match path (captured groups are passed to handler)
-	 * @param function $action Handler that handles this request
+	 * @param string $method HTTP request method (`"*"` to match any)
+	 * @param string $path Regular expression to match query path
+	 * @param callable $action Handler for this route
 	 */
 	public static function route($method, $path, $action) {
-		self::$routes[] = new Route($method, $path, $action, self::$host);
+		$route = new Route($method, $path, $action);
+		if (self::$host !== null) { $route->host = self::$host; }
+		if (self::$base !== null) { $route->base = self::$base; }
+
+		self::$routes[] = $route;
 	}
 
 	/**
-	 * Use virtual host (all subsequent calls to `route()` will use this virtual host)
-	 * @param string $host Hostname
+	 * Set active path (all subsequent calls to `Router::route` will use this path)
+	 * @param string|false $base
 	 */
-	public static function use($host = null) {
-		if ($host) {
-			if (!is_string($host)) throw new Exception();
+	public static function usePath($path = false) {
+		if ($path === false) {
+			self::$base = null;
+		} else {
+			self::$base = $path;
+		}
+	}
+
+	/**
+	 * Set active hostname (all subsequent calls to `Router::route` will use this virtual host)
+	 * @param string|false $host Hostname
+	 */
+	public static function useHost($host = false) {
+		if ($host === false) {
+			self::$host = null;
+		} else {
 			self::$host = $host;
-		} else { self::$host = null; }
+		}
 	}
 
 	/**
@@ -151,16 +192,24 @@ class Router {
 	 */
 	public static function accept() {
 		$path = strtok($_SERVER["REQUEST_URI"], '?');
-		$routes = self::$routes;
-		array_splice(self::$routes, 0);
 
-		for ($i = count($routes)-1; $i > -1; $i--) {
-			$route = $routes[$i];
+		for ($i = count(self::$routes) - 1; $i > -1; $i--) {
+			$route = &self::$routes[$i];
 			self::$continue = false;
 			
 			if (($route->method === '*' || $_SERVER['REQUEST_METHOD'] === $route->method) && ($route->host === null || $_SERVER['HTTP_HOST'] === $route->host)) {
+				$_path = $path;
+				
+				if ($route->base !== null) {
+					if (str_starts_with($path, $route->base)) {
+						$_path = substr($_path, strlen($route->base));
+					} else { 
+						continue; 
+					}
+				}
+				
 				$matches = null;
-				if (preg_match($route->path, $path, $matches) === 1) {
+				if (preg_match($route->path, $_path, $matches) === 1) {
 					array_shift($matches);
 					for ($j = 0; $j < count($matches); $j++) {
 						$matches[$j] = urldecode($matches[$j]);
@@ -182,19 +231,43 @@ class Router {
 }
 
 class Route {
+	/**
+	 * @var string HTTP request method
+	 */
 	public $method = null;
+
+	/**
+	 * @var string Regular expression to match query path
+	 */
 	public $path = null;
+
+	/**
+	 * @var callable Handler for this route
+	 */
 	public $action = null;
+
+	/**
+	 * @var string|null Route is valid for specific hostname only
+	 */
 	public $host = null;
 
-	function __construct($method, $path, $action, $host) {
-		if (!is_string($method)) $method = '*';
-		if (!is_string($path)) $path = '/^\/$/';
+	/**
+	 * @var string|null Base directory for this route
+	 */
+	public $base = null;
+
+	/**
+	 * @param string $method HTTP request method
+	 * @param string $path Regular expression to match query path
+	 * @param string $action Handler for this route
+	 */
+	function __construct($method, $path, $action) {
+		if ($method === null) $method = '*';
+		if ($path === null) $path = '/^\/$/';
 
 		$this->method = $method;
 		$this->path = $path;
 		$this->action = $action;
-		$this->host = $host;
 	}
 }
 
