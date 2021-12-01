@@ -38,10 +38,10 @@ Router::route("DELETE", "/^\/$/", function() { echo "You sent DELETE request!"; 
 ### Other methods
 This example would match GET and POST requests to `/api/thing` and forward them to appropriate handlers.
 ```php
-Router::usePath("/api/");
+Router::usePath("/api");
 
-Router::route("GET", "/^thing$/", ["API", "GetThing"]);
-Router::route("POST", "/^thing$/", ["API", "PostThing"]);
+Router::route("GET", "/^\/thing$/", ["API", "GetThing"]);
+Router::route("POST", "/^\/thing$/", ["API", "PostThing"]);
 ```
 To reset to default setting you can pass `false` to `Router::usePath`.
 ```php
