@@ -5,7 +5,7 @@ class Password {
 
 	private static function _hash($password, $salt) {
 		if (strlen(APP_SECRET) === 0) throw new Exception("APP_SECRET must not be empty");
-		return bin2hex($salt) . hash_hmac("sha256", implode("\0", [APP_SECRET, $password]), $salt);
+		return bin2hex($salt) . hash_hmac("sha256", implode("\0", [$salt, $password]), APP_SECRET);
 	}
 
 	/**
