@@ -283,8 +283,7 @@ class Model implements ArrayAccess {
             if ($array[1]->changed === true) {
                 if ($array[0]->type === "json") {
                     $update[$column] = json_encode($array[1]->value);
-                }
-                else {
+                } else {
                     $update[$column] = $array[1]->value;
                 }
             }
@@ -374,7 +373,7 @@ class Model implements ArrayAccess {
     public function offsetExists($offset) {
         return is_string($offset) && isset($this->columns[$offset]);
     }
-
+    
     public function offsetUnset($offset) {
         return;
     }
