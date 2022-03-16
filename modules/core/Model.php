@@ -89,6 +89,13 @@ class Model implements ArrayAccess {
             }
         }
 
+        /**
+         * Perform small corrections here
+         */
+        if (!is_string($options["limit"]) && is_numeric($options["limit"])) {
+            $options["limit"] = [$options["limit"]];
+        }
+
         return $defaults;
     }
 
