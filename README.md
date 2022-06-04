@@ -10,3 +10,4 @@ I use Visual Studio Code with PHP Intelephense extension and it supports PHPdoc.
 4. [Template queries](docs/4-template-queries.md)
 5. [Database models](docs/5-database-models.md)
 6. [HTML renderer](docs/6-html-renderer.md)
+7. [JSON API](docs/7-json-api.md)
