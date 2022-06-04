@@ -369,7 +369,10 @@ class Model implements ArrayAccess {
     }
 
     /**
-     * Array access to model's columns
+     * Set column value
+     * @param string $offset Column name
+     * @param mixed $value Column value
+     * @return void
      */
     public function offsetSet($offset, $value) {
         if (is_string($offset)) {
@@ -377,19 +380,25 @@ class Model implements ArrayAccess {
         }
     }
 
+    /**
+     * Check if column with specific name exists
+     * @param string $offset Column name
+     * @return bool
+     */
     public function offsetExists($offset) {
         return is_string($offset) && isset($this->columns[$offset]);
     }
-    
-    public function offsetUnset($offset) {
-        return;
-    }
 
     /**
+     * Get column value or `null` if column doesn't exist
      * @param string $offset Column name
      * @return mixed|null
      */
     public function offsetGet($offset) {
         return $this->offsetExists($offset) ? $this->get($offset) : null;
+    }
+
+    public function offsetUnset($offset) {
+        return;
     }
 }
