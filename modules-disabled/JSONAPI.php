@@ -11,6 +11,9 @@ class JSONAPI {
      */
     public $response = null;
 
+    static $err_badRequest = "Bad Request";
+    static $err_unauthorized = "Unauthorized";
+
     /**
      * Send response and stop script execution
      * @param int $status_code Response status code (see: https://restfulapi.net/http-status-codes/)
@@ -22,7 +25,7 @@ class JSONAPI {
         http_response_code($status_code);
         if ($is_empty) exit;
 
-        $res = [ "success" => true ];
+        $res = ["success" => true];
 
         if ($this->response !== null) { $res["response"] = $this->response; }
 
@@ -373,16 +376,24 @@ class JSONAPI {
         }
 
         $api = new JSONAPI();
+
+        /**
+         * Validate request data
+         */
+        if ($data === null && $template !== null) {
+            $api->_send(400, true, self::$err_badRequest);
+        }
+
         if ($data !== null) {
             $api->request = $data;
 
             if (!self::validate($api->request, $template)) {
-                $api->_send(400, true, "Bad Request");
+                $api->_send(400, true, self::$err_badRequest);
             }
 
             if ($authenticate !== null) {
                 $authenticated = call_user_func_array($authenticate, [ $api ]);
-                if (!$authenticated) { $api->sendUnauthorized("Unauthorized"); }
+                if (!$authenticated) { $api->sendUnauthorized(self::$err_unauthorized); }
             }
         }
 
