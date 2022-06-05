@@ -588,9 +588,14 @@ class Element {
 			// styles
 			if (count($this->styles) !== 0) {
 				$styles = [];
+
 				foreach ($this->styles as $name => $value) {
 					$styles[] = "$name: $value;";
 				}
+				
+				$last = count($this->styles) - 1;
+                $styles[$last] = substr($styles[$last], 0, -1);
+
 				$html[] = " style=\"".implode(" ", $styles)."\"";
 			}
 
