@@ -324,7 +324,7 @@ class Element {
 	 * Get all attributes
 	 * @return array
 	 */
-	function getAttributes() {
+	function getAll() {
 		$attributes = [];
 
 		foreach ($this->attributes as $key => $value) {
@@ -356,6 +356,18 @@ class Element {
 	 */
 	function setStyle($name, $value) {
 		$this->styles[$name] = strval($value);
+		return $this;
+	}
+
+	/**
+	 * Set all styles at once
+	 * @param array $attributes
+	 * @return Element
+	 */
+	function setStyles($styles) {
+		foreach ($styles as $key => $value) {
+			$this->setStyle($key, $value);
+		}
 		return $this;
 	}
 
@@ -433,7 +445,7 @@ class Element {
 			$callback($i, $child);
 			$i++;
 		}
-
+		
 		return $this;
 	}
 
