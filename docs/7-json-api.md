@@ -92,3 +92,42 @@ Response
     "error": "You are being rate-limited"
 }
 ```
+
+#### Custom array type definition
+```php
+$api = JSONAPI::accept([
+    ":type" => "array:mytype",
+    "mytype" => [
+        ":type" => "object",
+        "id" => [
+            ":type" => "number",
+        ],
+        "name" => [
+            ":type" => "string",
+            ":length" => [1, 230]
+        ]
+    ]
+]);
+```
+Example accepted request
+```json
+[
+    {
+        "id": 1,
+        "name": "Testing"
+    },
+    {
+        "id": 2,
+        "name": "More testing"
+    },
+]
+```
+Example invalid request
+```json
+[
+    {
+        "id": "1",
+        "name": ""
+    }
+]
+```

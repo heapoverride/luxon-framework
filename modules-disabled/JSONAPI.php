@@ -159,8 +159,9 @@ class JSONAPI {
      * Determine if all values in input array have the same value
      * @param array $array
      * @param string $_type 
+     * @param array $template
      */
-    private static function arrayType(&$array, $_type) {
+    private static function arrayType(&$array, $_type, &$template) {
         $type = explode(":", $_type, 2);
 
         if ($type[0] === "object") {
@@ -198,7 +199,20 @@ class JSONAPI {
             foreach ($array as &$a) { if (!is_bool($a)) return false; }
         }
 
-        return true;
+        // validate custom type
+        $error = false;
+
+        if (!array_key_exists($type[0], $template)) {
+            // missing custom type definition
+            return false;
+        }
+
+        foreach ($array as &$a) {
+            self::_validate($a, $template[$type[0]], $error);
+            if ($error) break;
+        }
+
+        return !$error;
     }
 
     /**
@@ -260,7 +274,7 @@ class JSONAPI {
             /**
              * Check array element types?
              */
-            if (count($type) === 2 && !self::arrayType($prop, $type[1])) {
+            if (count($type) === 2 && !self::arrayType($prop, $type[1], $template)) {
                 $error = true; return;
             }
         }
