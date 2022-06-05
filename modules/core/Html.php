@@ -417,7 +417,7 @@ class Element {
 		$array = [];
 
 		for ($i=0; $i<$times; $i++)
-			$array[] = $this;
+			$array[] = clone $this;
 
 		return $array;
 	}
@@ -491,7 +491,7 @@ class Element {
 		$this->_findFirstType($class, $this, $result);
 		return $result;
 	}
-	
+
 	private function _findFirstType($class, $element, &$result) {
 		if ($element->is($class)) {
 			$result = $element;
