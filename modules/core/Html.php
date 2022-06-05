@@ -491,6 +491,7 @@ class Element {
 		$this->_findFirstType($class, $this, $result);
 		return $result;
 	}
+	
 	private function _findFirstType($class, $element, &$result) {
 		if ($element->is($class)) {
 			$result = $element;
@@ -520,6 +521,34 @@ class Element {
 		}
 
 		return $array;
+	}
+
+	/**
+	 * Get child element at index
+	 * @param int $index
+	 * @return Element|null
+	 */
+	function at($index) {
+		if (array_key_exists($index, $this->children)) {
+			return $this->children[$index];
+		}
+		return null;
+	}
+
+	/**
+	 * Get first child element
+	 * @return Element|null
+	 */
+	function first() {
+		return $this->at(0);
+	}
+
+	/**
+	 * Get last child element
+	 * @return Element|null
+	 */
+	function last() {
+		return $this->at(count($this->children) - 1);
 	}
 
 	/**
