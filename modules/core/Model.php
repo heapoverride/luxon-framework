@@ -116,7 +116,7 @@ class Model implements ArrayAccess {
      * Save model with name
      * @param string $name Model name
      */
-    function saveModel($name) {
+    function save($name) {
         self::$models[$name] = $this;
     }
 
@@ -280,10 +280,10 @@ class Model implements ArrayAccess {
     }
 
     /**
-     * Save changed columns and return `true` on success and `false` on error
+     * Update changed columns and return `true` on success and `false` on error
      * @return bool
      */
-    function save() {
+    function update() {
         $update = [];
 
         foreach ($this->columns as $column => $array) {
