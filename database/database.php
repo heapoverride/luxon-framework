@@ -205,7 +205,7 @@
         /**
          * Boolean value set to true if there were any errors with this query
          */
-        public $isError = null;
+        public $isError = false;
 
         function __construct($mysqli_result) {
             $this->data = $mysqli_result;
