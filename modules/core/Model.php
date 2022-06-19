@@ -154,31 +154,36 @@ class Model implements ArrayAccess {
         $options = self::getOptions($options);
         $columns = array_keys($this->columns);
         
-        $result = ORM::instance()
-            ->select($this->table, $columns)
-            ->where(...$options["where"])
-            ->exec();
+        try {
+            $result = ORM::instance()
+                ->select($this->table, $columns)
+                ->where(...$options["where"])
+                ->exec();
 
-        if (!$result->isError && $result->count() === 1) {
-            $row = $result->fetch();
-            
-            $model = new Model();
-            $model->table = $this->table;
+            if (!$result->isError && $result->count() === 1) {
+                $row = $result->fetch();
+                
+                $model = new Model();
+                $model->table = $this->table;
 
-            foreach ($columns as $column) {
-                $value = self::convert($row[$column], $this->columns[$column][0]->type);
-                $model->columns[$column] = [
-                    $this->columns[$column][0], 
-                    new ColumnValue($value)
-                ];
+                foreach ($columns as $column) {
+                    $value = self::convert($row[$column], $this->columns[$column][0]->type);
+                    $model->columns[$column] = [
+                        $this->columns[$column][0], 
+                        new ColumnValue($value)
+                    ];
+                }
+
+                $pk = $this->findPK();
+                if ($model->columns[$pk][0]->type === "int") {
+                    $model->columns[$pk][1]->value = intval($model->columns[$pk][1]->value);
+                }
+
+                return $model;
             }
-
-            $pk = $this->findPK();
-            if ($model->columns[$pk][0]->type === "int") {
-                $model->columns[$pk][1]->value = intval($model->columns[$pk][1]->value);
-            }
-
-            return $model;
+        }
+        catch (Exception $e) {
+            // ...
         }
 
         return false;
@@ -204,30 +209,35 @@ class Model implements ArrayAccess {
         $columns = array_keys($this->columns);
         $models = [];
         
-        $result = ORM::instance()
-            ->select($this->table, $columns)
-            ->where(...$options["where"])
-            ->orderBy($options["order"]["columns"], $options["order"]["order"])
-            ->limit(...$options["limit"])
-            ->exec();
+        try {
+            $result = ORM::instance()
+                ->select($this->table, $columns)
+                ->where(...$options["where"])
+                ->orderBy($options["order"]["columns"], $options["order"]["order"])
+                ->limit(...$options["limit"])
+                ->exec();
 
-        if (!$result->isError && $result->count() > 0) {
-            while ($row = $result->fetch()) {
-                $model = new Model();
-                $model->table = $this->table;
-    
-                foreach ($columns as $column) {
-                    $value = self::convert($row[$column], $this->columns[$column][0]->type);
-                    $model->columns[$column] = [
-                        $this->columns[$column][0], 
-                        new ColumnValue($value)
-                    ];
+            if (!$result->isError && $result->count() > 0) {
+                while ($row = $result->fetch()) {
+                    $model = new Model();
+                    $model->table = $this->table;
+        
+                    foreach ($columns as $column) {
+                        $value = self::convert($row[$column], $this->columns[$column][0]->type);
+                        $model->columns[$column] = [
+                            $this->columns[$column][0], 
+                            new ColumnValue($value)
+                        ];
+                    }
+        
+                    $models[] = $model;
                 }
-    
-                $models[] = $model;
-            }
 
-            return $models;
+                return $models;
+            }
+        }
+        catch (Exception $e) {
+            // ...
         }
 
         return false;
@@ -286,30 +296,37 @@ class Model implements ArrayAccess {
     function update() {
         $update = [];
 
-        foreach ($this->columns as $column => $array) {
-            if ($array[1]->changed === true) {
-                if ($array[0]->type === "json") {
-                    $update[$column] = json_encode($array[1]->value);
-                } else {
-                    $update[$column] = $array[1]->value;
+        try {
+            foreach ($this->columns as $column => $array) {
+                if ($array[1]->changed === true) {
+                    if ($array[0]->type === "json") {
+                        $update[$column] = json_encode($array[1]->value);
+                    } else {
+                        $update[$column] = $array[1]->value;
+                    }
                 }
             }
+    
+            $pk = $this->findPK();
+            
+            $result = ORM::instance()
+                ->update($this->table, $update)
+                ->where($pk, $this->columns[$pk][1]->value)
+                ->exec();
+    
+            if ($result->isError) return false;
+    
+            foreach ($this->columns as $column => $array) {
+                $array[1]->changed = false;
+            }
+    
+            return true;
+        }
+        catch (Exception $e) {
+            // ...
         }
 
-        $pk = $this->findPK();
-        
-        $result = ORM::instance()
-            ->update($this->table, $update)
-            ->where($pk, $this->columns[$pk][1]->value)
-            ->exec();
-
-        if ($result->isError) return false;
-
-        foreach ($this->columns as $column => $array) {
-            $array[1]->changed = false;
-        }
-
-        return true;
+        return false;
     }
 
     /**
@@ -341,13 +358,17 @@ class Model implements ArrayAccess {
             }
         }
 
-        $result = ORM::instance()
-            ->insert($this->table, $array)
-            ->exec();
+        try {
+            $result = ORM::instance()
+                ->insert($this->table, $array)
+                ->exec();
 
-        if (!$result->isError) {
-            $model->columns[$this->findPK()][1]->value = Database::getLastInsertId();
-            return $model;
+            if (!$result->isError) {
+                $model->columns[$this->findPK()][1]->value = Database::getLastInsertId();
+                return $model;
+            }
+        } catch (Exception $e) {
+            // ...
         }
 
         return false;
@@ -360,12 +381,18 @@ class Model implements ArrayAccess {
     function delete() {
         $pk = $this->findPK();
         
-        $result = ORM::instance()
-            ->deleteFrom($this->table)
-            ->where($pk, $this->columns[$pk][1]->value)
-            ->exec();
+        try {
+            $result = ORM::instance()
+                ->deleteFrom($this->table)
+                ->where($pk, $this->columns[$pk][1]->value)
+                ->exec();
+                
+            return !$result->isError;
+        } catch (Exception $e) {
+            // ...
+        }
 
-        return !$result->isError;
+        return false;
     }
 
     /**
